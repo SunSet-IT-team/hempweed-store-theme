@@ -1,0 +1,221 @@
+.menu__section {
+  position: relative;
+}
+
+.menu__btn._active {
+  transition: all 0.3s ease 0s;
+}
+
+.menu__btn img {
+  transition: all 0.3s ease 0s;
+}
+
+.menu__btn._active img {
+  transform: rotate(180deg);
+}
+
+.header__menu {
+  gap: var(--spacing-px-40);
+}
+
+.menu__dropdown_hidden {
+  position: absolute;
+  left: var(--spacing-px-0);
+  top: var(--spacing-px-53);
+  z-index: 2;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: all 0.5s ease;
+}
+
+.menu__dropdown_hidden._show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+
+.menu__dropdown {
+  gap: var(--spacing-px-10);
+  background: no-repeat 0 0 / 100% 100% var(--colorfff);
+  box-shadow: var(--spacing-px-0) var(--spacing-px-4) var(--spacing-px-4) var(--spacing-px-0) var(--boxShadow_1);
+  border-radius: var(--spacing-px-10);
+  padding: var(--spacing-px-20);
+  max-width: var(--spacing-px-240);
+  min-width: var(--spacing-px-240);
+  width: var(--proc-100);
+  max-height: max-content;
+}
+
+.header__nav_wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.burger__btn {
+  position: relative;
+  display: none;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  width: 30px;
+  min-width: 30px;
+  max-width: 30px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+  z-index: 20;
+}
+
+.burger__btn span {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 4px;
+  background-color: var(--color-2);
+  border-radius: 2px;
+  transition: all 0.3s ease-in-out
+}
+
+.burger__btn span:nth-child(1) {
+  top: 0;
+}
+
+.burger__btn span:nth-child(2) {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.burger__btn span:nth-child(3) {
+  bottom: 0;
+}
+
+.burger__btn.active span:nth-child(1) {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.burger__btn.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.burger__btn.active span:nth-child(3) {
+  bottom: 50%;
+  transform: translateY(50%) rotate(-45deg);
+}
+
+@media screen and (max-width: 1200px) {
+  .burger__btn {
+    display: flex;
+    pointer-events: all;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .header__nav_wrap {
+    gap: 40px;
+    flex-direction: column;
+    justify-content: unset;
+    align-items: flex-start;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: linear-gradient(0deg, rgba(30, 57, 27, 0.6) 0%, #1e391b 100%);
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateX(-100%);
+    transition: all 0.5s ease;
+  }
+
+  .header__nav_wrap._shown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+    transform: translateX(0);
+  }
+
+  .header__nav_wrap > .header__menu {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-px-20);
+    order: 1;
+    align-self: center;
+  }
+  
+  .menu__dropdown_hidden {
+    margin-top: var(--spacing-px-20);
+    position: static;
+    left: unset;
+    top: unset;
+    max-height: 0;
+    overflow: hidden;
+    opacity: unset;
+    visibility: unset;
+    transition: all 0.5s linear;
+  }
+
+  .menu__dropdown_hidden._show {
+    max-height: 500px;
+    overflow: visible;
+  }
+
+  .menu__btn span,
+  .menu__dropdown-link {
+    font-size: var(--spacing-px-18);
+  }
+
+  .header__container {
+    padding-top: var(--spacing-px-15);
+    padding-bottom: var(--spacing-px-15);
+  }
+}
+
+@media screen and (max-width: 1023.98px) {
+
+}
+
+@media screen and (max-width: 900px) {
+  
+}
+
+@media screen and (max-width: 800px) {
+  
+}
+
+@media screen and (max-width: 768px) {
+  .menu__btn span,
+  .menu__dropdown-link {
+    font-size: var(--spacing-px-16);
+  }
+
+  .burger__btn {
+    height: var(--spacing-px-20);
+    width: var(--spacing-px-26);
+    min-width: var(--spacing-px-26);
+    max-width: var(--spacing-px-26);
+  }
+
+  .burger__btn span {
+    height: var(--spacing-px-2);
+  }
+}
+
+@media screen and (max-width: 600px) {
+
+}
+
+@media screen and (max-width: 400px) {
+  .menu__btn span,
+  .menu__dropdown-link {
+    font-size: var(--spacing-px-14);
+  }
+}

@@ -1,0 +1,70 @@
+:root {
+  --boxShadow_1: rgba(0, 0, 0, 0.25);
+  --colorfff: #fff;
+  --colord9d9d9: #d9d9d9;
+  --color000: #000;
+  --modalBG: rgba(0, 0, 0, 0.54);
+  --modalBG2: rgba(0, 0, 0, 0.67);
+  --color255092: rgba(255, 255, 255, 0.92);
+  --color00732e: #00732e;
+  --colorfe0000: #fe0000;
+  --colorffe500: #ffe500;
+  --color1e391b: #1e391b;
+  --color0067: rgba(0, 0, 0, 0.67);
+  --color00035: rgba(0, 0, 0, 0.35);
+  --bannerShadow:  0 6px 14px 0 rgba(20, 39, 18, 0.18), 0 26px 26px 0 rgba(20, 39, 18, 0.15), 0 103px 41px 0 rgba(20, 39, 18, 0.03), 0 58px 35px 0 rgba(20, 39, 18, 0.09), 0 161px 45px 0 rgba(20, 39, 18, 0);
+  --color25507: rgba(255, 255, 255, 0.7);
+  --transparent: transparent;
+  --color121815: #121815;
+  --color49a349: #49a349;
+  --color11548: rgba(0, 115, 46, 0.48);
+  --color00041: rgba(0, 0, 0, 0.41);
+}
+
+._color_fff { color: var(--colorfff); }
+._bg_fff { background-color: var(--colorfff); }
+
+._color_d9d9d9 { color: var(--colord9d9d9); }
+._bg_d9d9d9 { background-color: var(--colord9d9d9); }
+
+._color_000 { color: var(--color000); }
+._bg_000 { background-color: var(--color000); }
+
+._bg_modal { background-color: var(--modalBG); }
+._bg_modal2 { background-color: var(--modalBG2); }
+
+._color_255092 { color: var(--color255092); }
+._bg_color255092 { background-color: var(--color255092); }
+
+._color_00732e { color: var(--color00732e); }
+._bg_00732e { background-color: var(--color00732e); }
+
+._color_fe0000 { color: var(--colorfe0000); }
+._bg_fe0000 { background-color: var(--colorfe0000); }
+
+._color_ffe500 { color: var(--colorffe500); }
+._bg_ffe500 { background-color: var(--colorffe500); }
+
+._color_1e391b { color: var(--color1e391b); }
+._bg_1e391b { background-color: var(--color1e391b); }
+
+._color_0067 { color: var(--color0067); }
+._bg_0067 { background-color: var(--color0067); }
+
+._color_00035 { color: var(--color00035); }
+._bg_00035 { background-color: var(--color00035); }
+
+._color_25507 { color: var(--color25507); }
+._bg_25507 { background-color: var(--color25507); }
+
+._color_121815 { color: var(--color121815); }
+._bg_121815 { background-color: var(--color121815); }
+
+._color_49a349 { color: var(--color49a349); }
+._bg_49a349 { background-color: var(--color49a349); }
+
+._color_11548 { color: var(--color11548); }
+._bg_11548 { background-color: var(--color11548); }
+
+._color_00041 { color: var(--color00041); }
+._bg_00041 { background-color: var(--color00041); }

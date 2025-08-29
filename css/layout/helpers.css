@@ -1,0 +1,97 @@
+button {
+  cursor: pointer;
+}
+
+textarea {
+  resize: none;
+}
+
+input, textarea {
+  outline: none;
+  padding: var(--spacing-px-0);
+}
+
+._pad_60 {
+  padding: var(--spacing-px-60) var(--spacing-px-0);
+}
+
+._heding {
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.3;
+}
+
+._flex {
+  display: flex;
+}
+
+._flex_col {
+  display: flex;
+  flex-direction: column;
+}
+
+._flex_col_center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+._flex_center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+._flex_start {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+._flex_start_center {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+._flex_center_stretch {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+._flex_center_sb {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+._flex_start_sb {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+._flex_sb_stretch {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+}
+
+._flex_end_center {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+._p_rel {
+  position: relative;
+}
+
+._p_abs {
+  position: absolute;
+}
+
+._p_fix  {
+  position: fixed;
+}

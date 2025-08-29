@@ -1,0 +1,67 @@
+._btn {
+  padding: var(--spacing-px-10);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+._red_btn {
+  padding: var(--spacing-px-23) var(--spacing-px-44);
+  background-color: var(--colorfe0000);
+  box-shadow: 0 3px 6px 0 rgba(254, 0, 0, 0.1), 0 11px 11px 0 rgba(254, 0, 0, 0.09), 0 24px 14px 0 rgba(254, 0, 0, 0.05), 0 42px 17px 0 rgba(254, 0, 0, 0.01), 0 66px 18px 0 rgba(254, 0, 0, 0);
+  border-radius: var(--spacing-px-40);
+  color: var(--colorfff);
+}
+
+._yellow_btn {
+  background-color: var(--colorffe500);
+  box-shadow: 0 6px 13px 0 rgba(0, 0, 0, 0.1), 0 23px 23px 0 rgba(0, 0, 0, 0.09), 0 52px 31px 0 rgba(0, 0, 0, 0.05), 0 93px 37px 0 rgba(0, 0, 0, 0.01), 0 145px 41px 0 rgba(0, 0, 0, 0);
+  border-radius: var(--spacing-px-100);
+}
+
+._green_btn {
+  border-radius: var(--spacing-px-100);
+  box-shadow: 0 6px 13px 0 rgba(0, 0, 0, 0.1), 0 23px 23px 0 rgba(0, 0, 0, 0.09), 0 52px 31px 0 rgba(0, 0, 0, 0.05), 0 93px 37px 0 rgba(0, 0, 0, 0.01), 0 145px 41px 0 rgba(0, 0, 0, 0);
+  background-color: var(--color00732e);
+}
+
+._btn_hover {
+  transition: all 0.3s ease 0s;
+}
+
+._btn_hover:hover {
+  box-shadow: none;
+}
+
+._red_btn strong {
+  color: var(--colorfff);
+}
+
+@media screen and (max-width: 1200px) {
+ 
+}
+
+@media screen and (max-width: 1023.98px) {
+  
+}
+
+@media screen and (max-width: 900px) {
+  
+}
+
+@media screen and (max-width: 800px) {
+  
+}
+
+@media screen and (max-width: 768px) {
+
+}
+
+@media screen and (max-width: 600px) {
+
+}
+
+@media screen and (max-width: 400px) {
+ 
+}

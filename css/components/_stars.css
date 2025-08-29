@@ -1,0 +1,45 @@
+.slider__stars {
+  padding-top: var(--spacing-px-5);
+  padding-bottom: var(--spacing-px-26);
+  gap: var(--spacing-px-6);
+}
+
+.slider__star {
+  position: absolute;
+  opacity: 0;
+  width: var(--spacing-px-0);
+  height: var(--spacing-px-0);
+}
+
+.slider__star + .stars__label {
+  cursor: pointer;
+  display: inline-block;
+  width: var(--spacing-px-32);
+  height: var(--spacing-px-29);
+  min-width: var(--spacing-px-32);
+  min-height: var(--spacing-px-29);
+  background-image: url("data:image/svg+xml,%3Csvg width='32' height='29' viewBox='0 0 32 29' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M16 3.23607L18.6412 11.3647L18.8657 12.0557H19.5922H28.1392L21.2246 17.0795L20.6368 17.5066L20.8613 18.1976L23.5024 26.3262L16.5878 21.3024L16 20.8754L15.4122 21.3024L8.49755 26.3262L11.1387 18.1976L11.3632 17.5066L10.7754 17.0795L3.86078 12.0557H12.4078H13.1343L13.3588 11.3647L16 3.23607Z' stroke='%2300732E' stroke-width='2'/%3E%3C/svg%3E");
+  background-size: cover;
+}
+
+.stars__label.hovered,
+.slider__star:checked + .stars__label {
+  background-image: url("data:image/svg+xml,%3Csvg width='32' height='29' viewBox='0 0 32 29' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M16 0L19.5922 11.0557H31.2169L21.8123 17.8885L25.4046 28.9443L16 22.1115L6.59544 28.9443L10.1877 17.8885L0.783095 11.0557H12.4078L16 0Z' fill='%2300732E'/%3E%3C/svg%3E");
+}
+
+.slider__star._yellow + .stars__label.__y,
+.stars__label.__y.hovered,
+.slider__star._yellow:checked + .stars__label.__y {
+  background-image: url("data:image/svg+xml,%3Csvg width='23' height='21' viewBox='0 0 23 21' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11.5 0L14.0819 7.9463H22.4371L15.6776 12.8574L18.2595 20.8037L11.5 15.8926L4.74047 20.8037L7.32238 12.8574L0.56285 7.9463H8.91809L11.5 0Z' fill='%23FFE500' /%3E%3C/svg%3E");
+}
+
+
+@media screen and (max-width: 600px) {
+  .slider__star + .stars__label {
+    width: var(--spacing-px-24);
+    height: var(--spacing-px-21);
+    min-width: var(--spacing-px-24);
+    min-height: var(--spacing-px-21);
+  }
+}
+

@@ -1,0 +1,635 @@
+<?php
+/**
+ * kipr functions and definitions
+ *
+ * @link https://developer.wordpress.org/themes/basics/theme-functions/
+ *
+ * @package kipr
+ */
+
+if ( ! defined( '_S_VERSION' ) ) {
+    // Replace the version number of the theme on each release.
+    define( '_S_VERSION', '1.0.0' );
+}
+
+/**
+ * Sets up theme defaults and registers support for various WordPress features.
+ *
+ * Note that this function is hooked into the after_setup_theme hook, which
+ * runs before the init hook. The init hook is too late for some features, such
+ * as indicating support for post thumbnails.
+ */
+function kipr_setup() {
+    /*
+        * Make theme available for translation.
+        * Translations can be filed in the /languages/ directory.
+        * If you're building a theme based on kipr, use a find and replace
+        * to change 'kipr' to the name of your theme in all the template files.
+        */
+    load_theme_textdomain( 'kipr', get_template_directory() . '/languages' );
+
+    // Add default posts and comments RSS feed links to head.
+    add_theme_support( 'automatic-feed-links' );
+
+    /*
+        * Let WordPress manage the document title.
+        * By adding theme support, we declare that this theme does not use a
+        * hard-coded <title> tag in the document head, and expect WordPress to
+        * provide it for us.
+        */
+    add_theme_support( 'title-tag' );
+
+    /*
+        * Enable support for Post Thumbnails on posts and pages.
+        *
+        * @link https://developer.wordpress.org/themes/functionality/featured-images-post-thumbnails/
+        */
+    add_theme_support( 'post-thumbnails' );
+
+    // This theme uses wp_nav_menu() in one location.
+    register_nav_menus(
+        array(
+            'menu-1' => esc_html__( 'Primary', 'kipr' ),
+        )
+    );
+
+    /*
+        * Switch default core markup for search form, comment form, and comments
+        * to output valid HTML5.
+        */
+    add_theme_support(
+        'html5',
+        array(
+            'search-form',
+            'comment-form',
+            'comment-list',
+            'gallery',
+            'caption',
+            'style',
+            'script',
+        )
+    );
+
+    // Set up the WordPress core custom background feature.
+    add_theme_support(
+        'custom-background',
+        apply_filters(
+            'kipr_custom_background_args',
+            array(
+                'default-color' => 'ffffff',
+                'default-image' => '',
+            )
+        )
+    );
+
+    // Add theme support for selective refresh for widgets.
+    add_theme_support( 'customize-selective-refresh-widgets' );
+
+    /**
+     * Add support for core custom logo.
+     *
+     * @link https://codex.wordpress.org/Theme_Logo
+     */
+    add_theme_support(
+        'custom-logo',
+        array(
+            'height'      => 250,
+            'width'       => 250,
+            'flex-width'  => true,
+            'flex-height' => true,
+        )
+    );
+}
+add_action( 'after_setup_theme', 'kipr_setup' );
+
+/**
+ * Set the content width in pixels, based on the theme's design and stylesheet.
+ *
+ * Priority 0 to make it available to lower priority callbacks.
+ *
+ * @global int $content_width
+ */
+function kipr_content_width() {
+    $GLOBALS['content_width'] = apply_filters( 'kipr_content_width', 640 );
+}
+add_action( 'after_setup_theme', 'kipr_content_width', 0 );
+
+/**
+ * Register widget area.
+ *
+ * @link https://developer.wordpress.org/themes/functionality/sidebars/#registering-a-sidebar
+ */
+function kipr_widgets_init() {
+    register_sidebar(
+        array(
+            'name'          => esc_html__( 'Sidebar', 'kipr' ),
+            'id'            => 'sidebar-1',
+            'description'   => esc_html__( 'Add widgets here.', 'kipr' ),
+            'before_widget' => '<section id="%1$s" class="widget %2$s">',
+            'after_widget'  => '</section>',
+            'before_title'  => '<h2 class="widget-title">',
+            'after_title'   => '</h2>',
+        )
+    );
+}
+add_action( 'widgets_init', 'kipr_widgets_init' );
+
+/**
+ * Enqueue scripts and styles.
+ */
+function kipr_scripts() {
+    wp_enqueue_style( 'kipr-style', get_stylesheet_uri(), array(), _S_VERSION );
+    wp_style_add_data( 'kipr-style', 'rtl', 'replace' );
+
+    wp_enqueue_script( 'kipr-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
+
+    if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
+        wp_enqueue_script( 'comment-reply' );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'kipr_scripts' );
+
+/**
+ * Implement the Custom Header feature.
+ */
+require get_template_directory() . '/inc/custom-header.php';
+
+/**
+ * Custom template tags for this theme.
+ */
+require get_template_directory() . '/inc/template-tags.php';
+
+/**
+ * Functions which enhance the theme by hooking into WordPress.
+ */
+require get_template_directory() . '/inc/template-functions.php';
+
+/**
+ * Customizer additions.
+ */
+require get_template_directory() . '/inc/customizer.php';
+
+/**
+ * Load Jetpack compatibility file.
+ */
+if ( defined( 'JETPACK__VERSION' ) ) {
+    require get_template_directory() . '/inc/jetpack.php';
+}
+
+function custom_woocommerce_category_template($template) {
+    if (is_tax('product_cat')) {
+        return get_template_directory() . '/woocommerce/taxonomy-product_cat.php';
+    }
+    return $template;
+}
+add_filter('template_include', 'custom_woocommerce_category_template', 100);
+
+// Функция для использования кастомного шаблона для товаров
+function custom_woocommerce_template($template) {
+    if (is_singular('product')) {
+        $custom_template = get_stylesheet_directory() . '/woocommerce/custom-product-template.php';
+        if (file_exists($custom_template)) {
+            return $custom_template;
+        }
+    }
+    return $template;
+}
+add_filter('template_include', 'custom_woocommerce_template');
+
+function update_cart_count_script() {
+    wp_enqueue_script('cart-update', get_template_directory_uri() . '/js/cart-update.js', array('jquery'), null, true );
+    wp_localize_script('cart-update', 'cart_data', array(
+        'ajax_url' => admin_url('admin-ajax.php')
+    ));
+}
+add_action('wp_enqueue_scripts', 'update_cart_count_script');
+
+function update_cart_count() {
+    echo WC()->cart->get_cart_contents_count();
+    wp_die();
+}
+add_action('wp_ajax_update_cart_count', 'update_cart_count');
+add_action('wp_ajax_nopriv_update_cart_count', 'update_cart_count');
+
+// 1. ПОЛНОСТЬЮ ОТКЛЮЧАЕМ ВСЕ редиректы WooCommerce
+add_filter('woocommerce_add_to_cart_redirect', 'disable_all_cart_redirects', 9999, 2);
+function disable_all_cart_redirects($redirect_url, $product_id) {
+    return false;
+}
+
+// 2. Отключаем стандартные уведомления WooCommerce
+add_filter('wc_add_to_cart_message_html', '__return_empty_string');
+
+// 3. Убираем ВСЕ стандартные уведомления WooCommerce
+add_action('template_redirect', 'remove_all_woocommerce_notices');
+function remove_all_woocommerce_notices() {
+    if (is_product() || is_cart()) {
+        remove_action('woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10);
+        remove_action('woocommerce_before_single_product', 'wc_print_notices', 10);
+        remove_action('woocommerce_shortcode_before_product_cat_loop', 'wc_print_notices', 10);
+        remove_action('woocommerce_before_shop_loop', 'wc_print_notices', 10);
+    }
+}
+
+// 4. AJAX обработчик для проверки наличия товара
+add_action('wp_ajax_check_product_availability', 'check_product_availability');
+add_action('wp_ajax_nopriv_check_product_availability', 'check_product_availability');
+function check_product_availability() {
+    $product_id = intval($_POST['product_id']);
+    $quantity = intval($_POST['quantity']);
+    
+    $product = wc_get_product($product_id);
+    
+    if (!$product) {
+        wp_send_json_error(array('message' => __('Товар не найден', 'kipr')));
+    }
+    
+    $stock_quantity = $product->get_stock_quantity();
+    $product_name = $product->get_name();
+    
+    if (!$product->is_in_stock()) {
+        wp_send_json_error(array('message' => __('Товара нет в наличии', 'kipr')));
+    } elseif ($stock_quantity > 0 && $quantity > $stock_quantity) {
+        $message = sprintf(_n('Только %d товар "%s" в наличии', 'Только %d товара "%s" в наличии', $stock_quantity, 'kipr'), $stock_quantity, $product_name);
+        wp_send_json_error(array('message' => $message));
+    } else {
+        wp_send_json_success();
+    }
+    
+    wp_die();
+}
+
+// 5. Добавляем кастомные уведомления при клике на кнопку
+add_action('wp_footer', 'custom_add_to_cart_notices');
+function custom_add_to_cart_notices() {
+    if (is_product() || is_shop() || is_product_category()) {
+        ?>
+        <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            // Функция для показа уведомлений
+            function showCustomNotice(message, type) {
+                $('.custom-woocommerce-notice').remove();
+                
+                var notice = $('<div class="custom-woocommerce-notice">' + message + '</div>');
+                
+                if (type === 'error') {
+                    notice.css({
+                        'background': '#f8d7da',
+                        'border': '1px solid #f5c6cb',
+                        'color': '#721c24'
+                    });
+                } else {
+                    notice.css({
+                        'background': '#d4edda',
+                        'border': '1px solid #c3e6cb',
+                        'color': '#155724'
+                    });
+                }
+                
+                notice.css({
+                    'position': 'fixed',
+                    'top': '100px',
+                    'left': '50%',
+                    'transform': 'translateX(-50%)',
+                    'padding': '15px 20px',
+                    'border-radius': '5px',
+                    'z-index': '99999',
+                    'max-width': '90%',
+                    'width': '400px',
+                    'text-align': 'center',
+                    'box-shadow': '0 4px 15px rgba(0,0,0,0.2)',
+                    'font-weight': 'bold',
+                    'font-size': '16px'
+                });
+                
+                $('body').append(notice);
+                
+                setTimeout(function() {
+                    notice.fadeOut(300, function() {
+                        $(this).remove();
+                    });
+                }, 5000);
+                
+                notice.on('click', function() {
+                    $(this).remove();
+                });
+            }
+
+            // Синхронизация количества
+            function syncQuantity() {
+                $('.cat__input').each(function() {
+                    var input = $(this);
+                    var quantity = input.val();
+                    var form = input.closest('.cat__form_cntr').find('form');
+                    
+                    // Обновляем скрытое поле
+                    form.find('input[name="quantity"]').val(quantity);
+                    
+                    // Обновляем data-атрибут кнопки
+                    form.find('.cat__add_btn').attr('data-quantity', quantity);
+                });
+            }
+
+            // Запускаем синхронизацию при загрузке
+            syncQuantity();
+
+            // Синхронизация при изменении поля
+            $(document).on('input change', '.cat__input', function() {
+                syncQuantity();
+            });
+
+            // Обработчик для кнопки cat__add_btn
+            $(document).on('click', '.cat__add_btn', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                var button = $(this);
+                var form = button.closest('form');
+                var product_id = button.attr('data-product_id');
+                var product_name = button.attr('data-product_name');
+                var quantity = button.attr('data-quantity') || form.find('input[name="quantity"]').val() || 1;
+                
+                if (!product_id) {
+                    showCustomNotice('Не удалось определить товар', 'error');
+                    return false;
+                }
+                
+                // Показываем уведомление о загрузке
+                showCustomNotice('Добавляем ' + quantity + ' шт. товара в корзину...', 'success');
+                
+                // Проверяем наличие товара
+                $.ajax({
+                    type: 'POST',
+                    url: '<?php echo admin_url('admin-ajax.php'); ?>',
+                    data: {
+                        action: 'check_product_availability',
+                        product_id: product_id,
+                        quantity: quantity
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Товар доступен - добавляем в корзину
+                            $.ajax({
+                                type: 'POST',
+                                url: '<?php echo admin_url('admin-ajax.php'); ?>',
+                                data: {
+                                    action: 'woocommerce_add_to_cart',
+                                    product_id: product_id,
+                                    quantity: quantity
+                                },
+                                success: function(cartResponse) {
+                                    if (cartResponse.error) {
+                                        showCustomNotice(cartResponse.error, 'error');
+                                    } else {
+                                        var message = quantity + ' шт. товара "' + product_name + '" добавлено в корзину';
+                                        showCustomNotice(message, 'success');
+                                        $(document.body).trigger('wc_fragment_refresh');
+                                    }
+                                },
+                                error: function() {
+                                    showCustomNotice('Ошибка при добавлении товара', 'error');
+                                }
+                            });
+                        } else {
+                            showCustomNotice(response.data.message, 'error');
+                        }
+                    },
+                    error: function() {
+                        showCustomNotice('Ошибка проверки наличия товара', 'error');
+                    }
+                });
+                
+                return false;
+            });
+            
+            // Обработчик для стандартных форм
+            $('form.cart').on('submit', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                var form = $(this);
+                var product_id = form.find('input[name="add-to-cart"]').val();
+                var quantity = form.find('input[name="quantity"]').val() || 1;
+                var product_name = form.closest('.product').find('.product_title').text() || 'Товар';
+                
+                // Показываем уведомление о загрузке
+                showCustomNotice('Добавляем товар в корзину...', 'success');
+                
+                // Проверяем наличие товара
+                $.ajax({
+                    type: 'POST',
+                    url: '<?php echo admin_url('admin-ajax.php'); ?>',
+                    data: {
+                        action: 'check_product_availability',
+                        product_id: product_id,
+                        quantity: quantity
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Товар доступен - добавляем в корзину
+                            $.ajax({
+                                type: 'POST',
+                                url: '<?php echo admin_url('admin-ajax.php'); ?>',
+                                data: {
+                                    action: 'woocommerce_add_to_cart',
+                                    product_id: product_id,
+                                    quantity: quantity
+                                },
+                                success: function(cartResponse) {
+                                    if (cartResponse.error) {
+                                        showCustomNotice(cartResponse.error, 'error');
+                                    } else {
+                                        var message = 'Товар "' + product_name + '" добавлен в корзину';
+                                        showCustomNotice(message, 'success');
+                                        $(document.body).trigger('wc_fragment_refresh');
+                                    }
+                                },
+                                error: function() {
+                                    showCustomNotice('Ошибка при добавлении товара', 'error');
+                                }
+                            });
+                        } else {
+                            showCustomNotice(response.data.message, 'error');
+                        }
+                    },
+                    error: function() {
+                        showCustomNotice('Ошибка проверки наличия товара', 'error');
+                    }
+                });
+                
+                return false;
+            });
+        });
+        </script>
+        <?php
+    }
+}
+
+// AJAX для получения названия товара
+add_action('wp_ajax_get_product_name', 'get_product_name');
+add_action('wp_ajax_nopriv_get_product_name', 'get_product_name');
+function get_product_name() {
+    $product_id = intval($_POST['product_id']);
+    $product = wc_get_product($product_id);
+    
+    if ($product) {
+        wp_send_json_success(array('product_name' => $product->get_name()));
+    } else {
+        wp_send_json_error();
+    }
+    
+    wp_die();
+}
+
+// AJAX для получения ID товара по slug
+add_action('wp_ajax_get_product_id_by_slug', 'get_product_id_by_slug');
+add_action('wp_ajax_nopriv_get_product_id_by_slug', 'get_product_id_by_slug');
+function get_product_id_by_slug() {
+    $product_slug = sanitize_text_field($_POST['product_slug']);
+    $product = get_page_by_path($product_slug, OBJECT, 'product');
+    
+    if ($product) {
+        wp_send_json_success(array('product_id' => $product->ID));
+    } else {
+        wp_send_json_error();
+    }
+    
+    wp_die();
+}
+
+// 6. Дополнительная защита от редиректов
+add_action('template_redirect', 'prevent_cart_redirect_final');
+function prevent_cart_redirect_final() {
+    if (is_product() && !empty($_POST['add-to-cart'])) {
+        $_POST['add-to-cart'] = null;
+        unset($_POST['add-to-cart']);
+    }
+}
+
+// 7. Сохранение значений в localStorage и обновление product-quantity
+add_action('wp_footer', 'save_cart_values_to_localstorage');
+function save_cart_values_to_localstorage() {
+    if (is_cart() || is_checkout()) {
+        ?>
+        <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            // Функция для обновления отображения количества во ВСЕХ местах
+            function updateAllQuantityDisplays() {
+                // Обновляем в основной таблице корзины
+                $('.cat__input, .qty').each(function() {
+                    var input = $(this);
+                    var quantity = input.val();
+                    var productRow = input.closest('tr.cart_item');
+                    
+                    if (productRow.length) {
+                        var productNameCell = productRow.find('.product-name');
+                        productNameCell.find('.product-quantity').remove();
+                        productNameCell.append('<span class="product-quantity"> ×' + quantity + '</span>');
+                    }
+                });
+
+                // Обновляем в разделе "Your order" - ищем по структуре
+                $('.order-review .cart_item, .shop_table .cart_item').each(function() {
+                    var orderItem = $(this);
+                    var productNameElement = orderItem.find('.product-name');
+                    var originalText = productNameElement.text().replace(/ ×\d+$/, '').trim();
+                    
+                    // Ищем соответствующий input по имени товара
+                    var correspondingInput = $('.qty').filter(function() {
+                        var inputRow = $(this).closest('tr.cart_item');
+                        var inputProductName = inputRow.find('.product-name').text().replace(/ ×\d+$/, '').trim();
+                        return inputProductName === originalText;
+                    });
+                    
+                    if (correspondingInput.length) {
+                        var quantity = correspondingInput.val();
+                        productNameElement.text(originalText + ' ×' + quantity);
+                    }
+                });
+            }
+
+            // Функция для сохранения всех значений полей в localStorage
+            function saveInputValues() {
+                $('.cat__input, .qty').each(function() {
+                    var input = $(this);
+                    var inputName = input.attr('name') || input.attr('id') || 'unknown_input';
+                    var inputValue = input.val();
+                    
+                    localStorage.setItem('cart_input_' + inputName, inputValue);
+                });
+                updateAllQuantityDisplays();
+            }
+
+            // Функция для восстановления значений из localStorage
+            function restoreInputValues() {
+                $('.cat__input, .qty').each(function() {
+                    var input = $(this);
+                    var inputName = input.attr('name') || input.attr('id') || 'unknown_input';
+                    var savedValue = localStorage.getItem('cart_input_' + inputName);
+                    
+                    if (savedValue !== null && savedValue !== '' && savedValue !== '1') {
+                        input.val(savedValue);
+                    }
+                });
+            }
+
+            // Восстанавливаем значения при загрузке страницы
+            setTimeout(function() {
+                restoreInputValues();
+                updateAllQuantityDisplays();
+            }, 1000);
+
+            // Сохраняем значения при изменении полей ввода
+            $(document).on('input change', '.cat__input, .qty', function() {
+                saveInputValues();
+            });
+
+            // Обработчик для кнопки "Update cart"
+            $(document).on('click', 'button[name="update_cart"]', function(e) {
+                saveInputValues();
+            });
+
+            // Также обрабатываем отправку формы обновления корзины
+            $('form.woocommerce-cart-form').on('submit', function(e) {
+                saveInputValues();
+            });
+
+            // Обновляем отображение при изменении корзины
+            $(document.body).on('updated_cart_totals', function() {
+                setTimeout(function() {
+                    restoreInputValues();
+                    updateAllQuantityDisplays();
+                }, 1000);
+            });
+
+            // Дополнительно: обновляем при любых изменениях DOM
+            var observer = new MutationObserver(function() {
+                setTimeout(function() {
+                    updateAllQuantityDisplays();
+                }, 500);
+            });
+            
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+
+            // Принудительное обновление через 2 секунды на всякий случай
+            setTimeout(function() {
+                updateAllQuantityDisplays();
+            }, 2000);
+        });
+        </script>
+        <?php
+    }
+}
+
+// Включаем ajax add to cart для одиночных товаров
+add_action( 'wp_enqueue_scripts', 'enable_ajax_add_to_cart' );
+function enable_ajax_add_to_cart() {
+    if ( function_exists( 'WC' ) ) {
+        wp_enqueue_script( 'wc-add-to-cart' );
+        wp_enqueue_script( 'wc-add-to-cart-variation' );
+    }
+}
+?>

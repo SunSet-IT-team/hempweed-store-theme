@@ -1,0 +1,83 @@
+.breadcumbs {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--spacing-px-4);
+  padding-bottom: var(--spacing-px-20);
+}
+
+.breadcumbs li:first-child a {
+  display: flex;
+}
+
+.breadcumbs li:first-child a svg {
+  width: var(--spacing-px-22);
+  height: var(--spacing-px-22);
+  min-width: var(--spacing-px-22);
+  min-height: var(--spacing-px-22);
+  max-width: var(--spacing-px-22);
+  max-height: var(--spacing-px-22);
+} 
+
+@media screen and (max-width: 1200px) {
+  .breadcumbs {
+    font-size: var(--spacing-px-18);
+  }
+}
+
+@media screen and (max-width: 1023.98px) {
+  .breadcumbs {
+    font-size: var(--spacing-px-16);
+  }
+
+  .breadcumbs li:first-child a svg {
+    width: var(--spacing-px-20);
+    height: var(--spacing-px-20);
+    min-width: var(--spacing-px-20);
+    min-height: var(--spacing-px-20);
+    max-width: var(--spacing-px-20);
+    max-height: var(--spacing-px-20);
+  } 
+}
+
+@media screen and (max-width: 900px) {
+  
+}
+
+@media screen and (max-width: 800px) {
+  
+}
+
+@media screen and (max-width: 768px) {
+  .breadcumbs {
+    font-size: var(--spacing-px-14);
+  }
+
+  .breadcumbs li:first-child a svg {
+    width: var(--spacing-px-18);
+    height: var(--spacing-px-18);
+    min-width: var(--spacing-px-18);
+    min-height: var(--spacing-px-18);
+    max-width: var(--spacing-px-18);
+    max-height: var(--spacing-px-18);
+  } 
+}
+
+@media screen and (max-width: 600px) {
+  .breadcumbs {
+    font-size: var(--spacing-px-12);
+  }
+
+  .breadcumbs li:first-child a svg {
+    width: var(--spacing-px-14);
+    height: var(--spacing-px-14);
+    min-width: var(--spacing-px-14);
+    min-height: var(--spacing-px-14);
+    max-width: var(--spacing-px-14);
+    max-height: var(--spacing-px-14);
+  } 
+}
+
+@media screen and (max-width: 400px) {
+ 
+}
