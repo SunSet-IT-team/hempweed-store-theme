@@ -96,6 +96,26 @@ function kipr_scripts() {
         wp_enqueue_script('wc-add-to-cart');
     }
 }
+/**
+ * Увеличиваем количество товаров на странице категорий
+ */
+add_filter('loop_shop_per_page', 'custom_products_per_page', 20);
+function custom_products_per_page($cols) {
+    // Установите нужное количество товаров (например, 48, 96 или 200)
+    return 48;
+}
+
+/**
+ * Альтернативный способ через настройки WooCommerce
+ */
+add_filter('option_woocommerce_catalog_columns', 'custom_catalog_columns');
+add_filter('option_woocommerce_catalog_rows', 'custom_catalog_rows');
+function custom_catalog_columns($columns) {
+    return 4; // Количество колонок
+}
+function custom_catalog_rows($rows) {
+    return 12; // Количество рядов (4 колонки × 12 рядов = 48 товаров)
+}
 add_action('wp_enqueue_scripts', 'kipr_scripts');
 
 /**
