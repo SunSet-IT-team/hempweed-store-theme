@@ -1,0 +1,58 @@
+*{
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x:hidden;
+}
+
+html, body {
+  padding: 0px;
+  margin: 0px;
+  height: 100%;
+  /* /* width: 100%; */
+  /* max-width: 100%; */
+}
+
+body{ 
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 120%;
+  letter-spacing: 0.03em;
+  font-family: var(--font-family);
+  color: #383122;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #FFF6F0;
+  /* overflow-x: hidden; */
+}
+
+ul {
+  padding: 0px;
+  margin: 0px;
+}
+
+ul li{
+  list-style: none;
+}
+
+a{
+  text-decoration: none;
+  color: inherit; 
+}
+
+h1, h2, h3, h4, h5, h6{
+  margin: 0;
+  font-weight: normal;
+}
+
+p{
+  margin: 0;
+}
+
+
+
+
+

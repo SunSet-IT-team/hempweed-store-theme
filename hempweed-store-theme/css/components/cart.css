@@ -1,0 +1,160 @@
+.cart{
+  gap: 20px;
+  padding: 80px 0 100px;
+}
+
+.cart__block .actions,
+.cart__block{
+  gap: 16px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.cart__block{
+  width: 20%;
+}
+
+.cart__block .btn{
+  width: 100%;
+  border: none !important;
+  padding: 10px !important;
+  font-size: 20px !important;
+  text-align: center;
+}
+
+.cart .shop_table{
+  width: 79%;
+}
+
+.cart .product-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cart .product-name img{
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+}
+
+.cart .name{
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 20px;
+  max-width: 400px;
+  color: var(--color-7);
+}
+
+.cart .cat__input{
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+.cart .shop_table tr{
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  background: #fff;
+  border-radius: 20px;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.cart .shop_table thead, .cart .shop_table tbody{
+  display: flex;
+  flex-direction: column;
+}
+
+.cart .product-name{
+  width: 60%;
+}
+
+.cart .product-price, .cart .product-quantity, .cart .product-subtotal {
+  width: 12%;
+}
+
+.woocommerce-notices-wrapper{
+  position: fixed !important;
+  z-index: 100;
+  bottom: 0;
+  right: 0 !important;
+  left: 0 !important;
+  width: 100%;
+  margin: 0 !important;
+  font-size: 16px;
+}
+
+.woocommerce-message{
+  width: 100%;
+  margin: 0 !important;
+  font-size: 16px;
+}
+
+@media screen and (max-width: 1200px) {
+  .cart{
+    flex-direction: column-reverse;
+  }
+
+  .cart__block .actions{
+    flex-direction: row;
+  }
+
+  .cart .shop_table{
+    width: 100%;
+  }
+
+  .cart__block .actions, .cart__block{
+    width: 100%;
+  }
+
+  .cart__block .btn{
+    width: auto;
+    min-width: 200px;
+  }
+
+}
+
+@media screen and (max-width: 765px) {
+  .cart__block .actions{
+    flex-wrap: wrap;
+  }
+
+  .cart__block .btn{
+    width: 100%;
+  }
+
+  .cart .shop_table thead{
+    display: none;
+  }
+
+  .cart .shop_table tr{
+    flex-wrap: wrap;
+    position: relative;
+    gap: 10px;
+  }
+
+  .cart .shop_table .remove{
+    position: absolute;
+    z-index: 1;
+    top: 4px;
+    right: 6px;
+  }
+
+  .cart .product-name img {
+    width: 200px;
+    height: 200px;
+  }
+
+  .cart .product-name{
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cart .product-price, .cart .product-quantity, .cart .product-subtotal{
+    width: auto;
+  }
+}
+

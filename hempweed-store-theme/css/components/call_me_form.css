@@ -1,0 +1,176 @@
+.form {
+
+}
+
+.form__container {
+
+}
+
+.form__container {
+
+}
+
+
+.call__me_btn  {
+  padding: var(--spacing-px-7) var(--spacing-px-37);
+  max-width: var(--spacing-px-247);
+  width: var(--proc-100);
+  box-shadow: 0 0 0px 0 #fe0000, 0 0 0px 0 #fe0000, 0 0 1px 0 #fe0000, 0 0 3px 0 #fe0000, 0 0 5px 0 #fe0000, 0 0 8px 0 #fe0000!important;
+}
+
+.call__me_btn:hover {
+  box-shadow: none!important;
+}
+
+.form__container h2._heading,
+.form__container p._fw_700._color_1e391b {
+  font-size: var(--spacing-px-64);
+  text-align: center;
+  line-height: 1.3;
+}
+
+.form__container .frm-fluent-form .ff-t-container {
+  align-items: center!important;
+}
+
+.form__container label,
+.form__container .ff-el-input--label {
+  display: none!important;
+}
+
+.form__container .fluentform .ff-el-group {
+  margin-bottom: var(--spacing-px-25)!important;
+}
+
+.form__container input,
+.form__container textarea {
+  border: var(--spacing-px-2) solid transparent!important;
+  box-shadow: var(--boxShadow-px) var(--boxShadow_1)!important;
+  border-radius: var(--spacing-px-40)!important;
+  background-color: var(--colorfff)!important;
+  padding: var(--spacing-px-18) var(--spacing-px-33)!important;
+}
+
+.form__container input,
+.form__container textarea,
+.form__container textarea::placeholder,
+.form__container input::placeholder {
+  color: var(--color0067)!important;
+  font-weight: var(--fw-400)!important;
+  font-size: var(--spacing-px-24)!important;
+}
+
+.form__container input:focus-visible,
+.form__container input:focus-within,
+.form__container textarea:focus-visible,
+.form__container textarea:focus-within {
+  border: var(--spacing-px-2) solid var(--color000)!important;
+}
+
+.form__container input {
+
+}
+
+.form__container textarea {
+  min-height: var(--spacing-px-153)!important;
+}
+
+@media screen and (max-width: 1200px) {
+  .form__container h2._heading {
+    font-size: var(--spacing-px-54);
+  }
+
+  .call__me_btn {
+    padding: var(--spacing-px-7) var(--spacing-px-20);
+    font-size: var(--spacing-px-34);
+  }
+
+  .form__container input,
+  .form__container textarea,
+  .form__container textarea::placeholder,
+  .form__container input::placeholder {
+    font-size: var(--spacing-px-20)!important;
+  }
+}
+
+@media screen and (max-width: 1023.98px) {
+  .form__container h2._heading {
+    font-size: var(--spacing-px-50);
+  }
+
+  .call__me_btn {
+    font-size: var(--spacing-px-32);
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .form__container h2._heading {
+    font-size: var(--spacing-px-46);
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .form__container h2._heading {
+    font-size: var(--spacing-px-42);
+  }
+
+  .call__me_btn {
+    font-size: var(--spacing-px-28);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .form__container h2._heading {
+    font-size: var(--spacing-px-38);
+  }
+
+  .call__me_btn {
+    font-size: var(--spacing-px-24);
+    width: var(--proc-100);
+    max-width: unset;
+  }
+  .form__container input,
+  .form__container textarea,
+  .form__container textarea::placeholder,
+  .form__container input::placeholder {
+    font-size: var(--spacing-px-18)!important;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .form__container h2._heading {
+    font-size: var(--spacing-px-32);
+  }
+
+  .call__me_btn {
+    font-size: var(--spacing-px-20);
+    border-radius: var(--spacing-px-10);
+  }
+
+  .ff-default .ff-el-form-control {
+    border-radius: var(--spacing-px-10) !important;
+  }
+
+  .form__container input,
+  .form__container textarea {
+    padding: var(--spacing-px-14) var(--spacing-px-16) !important;
+  }
+
+  .form__container input,
+  .form__container textarea,
+  .form__container textarea::placeholder,
+  .form__container input::placeholder {
+    font-size: var(--spacing-px-16)!important;
+
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .form__container h2._heading {
+    font-size: var(--spacing-px-28);
+  }
+
+  .call__me_btn {
+    font-size: var(--spacing-px-18);
+  }
+}

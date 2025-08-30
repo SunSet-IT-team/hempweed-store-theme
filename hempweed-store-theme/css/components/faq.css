@@ -1,0 +1,161 @@
+.faq {
+  background: url(../../img/background/bgAccordion.png) no-repeat center center;
+  background-size: cover;
+  padding-top: var(--spacing-px-80);
+  padding-bottom: var(--spacing-px-80);
+}
+
+.faq__container {
+
+}
+
+.faq__container .title {
+  color: var(--color_fff);
+  padding-bottom: var(--spacing-px-75);
+}
+
+.faq__section {
+  gap: var(--spacing-px-30);
+}
+
+.faq__block {
+  border-radius: var(--spacing-px-40);
+  background-color: var(--color_fff);
+  width: var(--proc-100);
+  padding: var(--spacing-px-22) var(--spacing-px-33) var(--spacing-px-22) var(--spacing-px-73);
+}
+
+.faq__btns {
+  width: var(--proc-100);
+  background-color: var(--transparent);
+  border: none;
+  outline: none;
+  text-align: left;
+  padding: var(--spacing-px-0);
+  font-family: var(--third-family);
+  font-weight: var(--fw-700);
+  font-size: var(--spacing-px-36);
+  gap: var(--spacing-px-20);
+}
+
+.faq__btns::after {
+  content: "";
+  display: inline-flex;
+  width: var(--spacing-px-46);
+  height: var(--spacing-px-46);
+  border-radius: 50%;
+  background-color: var(--colorffe500);
+  background-image: url("data:image/svg+xml,%3Csvg width='22' height='13' viewBox='0 0 22 13' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20.5672 1.6414L11.0354 10.7383L1.50342 1.6414' stroke='black' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: var(--spacing-px-23) var(--spacing-px-13);
+  opacity: 0.5;
+  transition: all 0.3s ease 0s;
+}
+
+.faq__btns:hover::after,
+._shown .faq__btns::after {
+  opacity: 1;
+}
+
+.faq__title {
+  font-size: var(--spacing-px-36);
+  font-family: var(--third-family);
+  font-weight: var(--fw-700);
+}
+
+.faq__btns img {
+
+}
+
+.faq__text {
+
+}
+
+.faq__text p {
+  font-size: var(--spacing-px-24);
+  font-weight: var(--fw-400);
+  color: var(--color000);
+}
+
+@media screen and (max-width: 1200px) {
+  .faq__btns {
+    font-size: var(--spacing-px-32);
+  }
+
+  .faq__block {
+    padding: var(--spacing-px-22) var(--spacing-px-33);
+  }
+
+  .faq__text p {
+    font-size: var(--spacing-px-22);
+  }
+}
+
+@media screen and (max-width: 1023.98px) {
+  .faq__btns {
+    font-size: var(--spacing-px-28);
+  }
+
+  .faq__text p {
+    font-size: var(--spacing-px-20);
+  }
+
+  .faq__title {
+    font-size: var(--spacing-px-28);
+  }
+}
+
+@media screen and (max-width: 900px) {
+
+}
+
+@media screen and (max-width: 800px) {
+
+}
+
+@media screen and (max-width: 768px) {
+  .faq__btns {
+    font-size: var(--spacing-px-24);
+  }
+
+  .faq__text p {
+    font-size: var(--spacing-px-18);
+  }
+
+  .faq__container .title {
+    padding-bottom: var(--spacing-px-35);
+  }
+
+  .faq__title {
+    font-size: var(--spacing-px-24);
+  }
+
+  .faq__block {
+    padding: var(--spacing-px-25) var(--spacing-px-15);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .faq__btns {
+    font-size: var(--spacing-px-22);
+  }
+
+  .faq__text p {
+    font-size: var(--spacing-px-16);
+  }
+
+  .faq__title {
+    font-size: var(--spacing-px-20);
+  }
+
+  .faq__block {
+    border-radius: var(--spacing-px-14);
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .faq__text p {
+    font-size: var(--spacing-px-14);
+  }
+}

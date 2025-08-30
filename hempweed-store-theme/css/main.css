@@ -1,0 +1,28 @@
+@import url(./layout/normalize.css);
+@import url(./layout/base.css);
+@import url(./layout/font.css);
+@import url(./block.css);
+@import url(./layout/helpers.css);
+@import url(./layout/variables.css);
+@import url(./layout/colors.css);
+@import url(./layout/font_style.css);
+
+/* components */
+@import url(./components/main_page.css);
+@import url(./components/cart.css);
+@import url(./components/header.css);
+@import url(./components/form.css);
+@import url(./components/modal.css);
+@import url(./components/buttons.css);
+@import url(./components/_adult_modal.css);
+@import url(./components/breadcrumbs.css);
+@import url(./components/call_me_form.css);
+@import url(./components/product.css);
+@import url(./components/banner.css);
+@import url(./components/_stars.css);
+@import url(./components/categories.css);
+@import url(./components/news.css);
+@import url(./components/tabs.css);
+@import url(./components/features.css);
+@import url(./components/slider.css);
+@import url(./components/faq.css);

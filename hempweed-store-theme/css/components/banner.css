@@ -1,0 +1,77 @@
+.banner {
+  box-shadow: var(--bannerShadow);
+}
+
+.banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--proc-100);
+  height: var(--proc-100);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  z-index: -1;
+}
+
+.banner::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--proc-100);
+  height: var(--proc-100);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-color: var(--color00035);
+  z-index: -3;
+}
+
+.cosmetic__banner::before {
+  z-index: -4;
+  background-image: url(../../img/banners/cosmetic_banner.png);
+}
+
+.banner__container {
+
+}
+
+
+
+._banner_text_cntr {
+  gap: var(--spacing-px-12);
+}
+
+._heading_title {
+  line-height: 1.2;
+}
+
+@media screen and (max-width: 1200px) {
+ 
+}
+
+@media screen and (max-width: 1023.98px) {
+  
+}
+
+@media screen and (max-width: 900px) {
+  
+}
+
+@media screen and (max-width: 800px) {
+  
+}
+
+@media screen and (max-width: 768px) {
+
+}
+
+@media screen and (max-width: 600px) {
+
+}
+
+@media screen and (max-width: 400px) {
+ 
+}

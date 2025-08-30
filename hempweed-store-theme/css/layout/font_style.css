@@ -1,0 +1,57 @@
+:root {
+  --fw-100: 100;
+  --fw-200: 200;
+  --fw-300: 300;
+  --fw-400: 400;
+  --fw-500: 500;
+  --fw-600: 600;
+  --fw-700: 700;
+  --fw-800: 800;
+  --fw-900: 900;
+}
+
+:root {
+  --font-family: "Geologica", sans-serif;
+  --second-family: "Open Sans", sans-serif;
+  --third-family: "Cormorant", sans-serif;
+  --font3: "Inter", sans-serif;
+  --font4: "Montserrat", sans-serif;
+}
+
+._f_font { font-family: var(--font-family); }
+._f_second { font-family: var(--second-family); }
+._f_third { font-family: var(--third-family); }
+._f_font3 { font-family: var(--font3); }
+._f_font4 { font-family: var(--font4); }
+
+._fs_8 { font-size: var(--spacing-px-8); }
+._fs_10 { font-size: var(--spacing-px-10); }
+._fs_12 { font-size: var(--spacing-px-12); }
+._fs_14 { font-size: var(--spacing-px-14); }
+._fs_16 { font-size: var(--spacing-px-16); }
+._fs_18 { font-size: var(--spacing-px-18); }
+._fs_20 { font-size: var(--spacing-px-20); }
+._fs_22 { font-size: var(--spacing-px-22); }
+._fs_24 { font-size: var(--spacing-px-24); }
+._fs_26 { font-size: var(--spacing-px-26); }
+._fs_28 { font-size: var(--spacing-px-28); }
+._fs_30 { font-size: var(--spacing-px-30); }
+._fs_32 { font-size: var(--spacing-px-32); }
+._fs_34 { font-size: var(--spacing-px-34); }
+._fs_36 { font-size: var(--spacing-px-36); }
+._fs_38 { font-size: var(--spacing-px-38); }
+._fs_40 { font-size: var(--spacing-px-40); }
+._fs_42 { font-size: var(--spacing-px-42); }
+._fs_44 { font-size: var(--spacing-px-44); }
+._fs_46 { font-size: var(--spacing-px-46); }
+._fs_48 { font-size: var(--spacing-px-48); }
+
+._fw_100 { font-weight: var(--fw-100); }
+._fw_200 { font-weight: var(--fw-200); }
+._fw_300 { font-weight: var(--fw-300); }
+._fw_400 { font-weight: var(--fw-400); }
+._fw_500 { font-weight: var(--fw-500); }
+._fw_600 { font-weight: var(--fw-600); }
+._fw_700 { font-weight: var(--fw-700); }
+._fw_800 { font-weight: var(--fw-800); }
+._fw_900 { font-weight: var(--fw-900); }
