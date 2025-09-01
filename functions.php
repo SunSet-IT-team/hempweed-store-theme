@@ -99,6 +99,37 @@ function kipr_scripts() {
 add_action('wp_enqueue_scripts', 'kipr_scripts');
 
 /**
+ * Увеличиваем количество товаров на странице категорий
+ */
+add_filter('loop_shop_per_page', 'custom_products_per_page', 20);
+function custom_products_per_page($cols) {
+    // Установите нужное количество товаров (например, 48, 96 или 200)
+    return 48;
+}
+
+/**
+ * Добавляем пагинацию для категорий товаров
+ */
+function custom_woocommerce_pagination() {
+    if (woocommerce_products_will_display()) {
+        woocommerce_pagination();
+    }
+}
+add_action('woocommerce_after_shop_loop', 'custom_woocommerce_pagination');
+
+/**
+ * Оптимизация запросов WooCommerce для большого количества товаров
+ */
+add_action('pre_get_posts', 'optimize_product_queries');
+function optimize_product_queries($query) {
+    if (!is_admin() && $query->is_main_query() && (is_product_category() || is_shop())) {
+        // Уменьшаем нагрузку на базу данных
+        $query->set('posts_per_page', 48);
+        $query->set('no_found_rows', false); // Включаем пагинацию
+    }
+}
+
+/**
  * Include additional files
  */
 require get_template_directory() . '/inc/custom-header.php';
@@ -346,9 +377,9 @@ function custom_add_to_cart_notices() {
         color: #155724;
     }
     .custom-notice-error {
-        background: 'f8d7da';
-        border: 1px solid 'f5c6cb';
-        color: '721c24';
+        background: #f8d7da;
+        border: 1px solid #f5c6cb;
+        color: #721c24;
     }
     </style>
     <?php
@@ -608,3 +639,16 @@ add_filter('default_checkout_shipping_country', 'change_default_checkout_country
 function change_default_checkout_country() {
     return 'RU'; // Россия по умолчанию, но можно выбрать любую
 }
+
+/**
+ * Включаем lazy loading для изображений товаров (оптимизация)
+ */
+add_filter('wp_get_attachment_image_attributes', 'add_lazy_loading_to_products', 10, 3);
+function add_lazy_loading_to_products($attr, $attachment, $size) {
+    if (is_shop() || is_product_category() || is_product_tag()) {
+        $attr['loading'] = 'lazy';
+        $attr['decoding'] = 'async';
+    }
+    return $attr;
+}
+?>
