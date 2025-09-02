@@ -1,4 +1,12 @@
 <?php
+
+
+// Автоподключение всех PHP файлов из папки inc/
+foreach (glob(get_template_directory() . '/inc/*.php') as $file) {
+    require_once $file;
+}
+
+
 /**
  * kipr functions and definitions
  *
