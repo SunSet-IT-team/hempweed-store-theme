@@ -1,38 +1,26 @@
 <?php
 /**
- * inc/checkout-fixes.php
- * Фолбэк-редирект на "Спасибо за заказ" (order-received),
- * если штатный маршрут WooCommerce по какой-то причине не сработал.
+ * Ограничение количества товаров в категориях
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-function hempweed_force_thankyou_redirect( $order_id ) {
-    // Не выполняем в админке и не во время AJAX
-    if ( is_admin() || wp_doing_ajax() ) {
+/**
+ * Пример: ограничиваем вывод товаров в определённых категориях
+ */
+add_action('pre_get_posts', function ($query) {
+    // Работает только на витрине (не в админке) и в основном запросе WooCommerce
+    if (is_admin() || !$query->is_main_query() || !is_tax('product_cat')) {
         return;
     }
 
-    // Если уже на правильном эндпоинте — ничего не делаем
-    if ( function_exists( 'is_wc_endpoint_url' ) && is_wc_endpoint_url( 'order-received' ) ) {
-        return;
-    }
+    // Ограничиваем количество товаров только в выбранных категориях
+    $limited_categories = ['semena', 'masla']; // 🔹 укажи здесь слаги категорий
+    $current_category   = get_queried_object();
 
-    if ( empty( $order_id ) ) {
-        return;
+    if ($current_category && in_array($current_category->slug, $limited_categories, true)) {
+        $query->set('posts_per_page', 12); // 🔹 сколько товаров выводить
     }
-
-    $order = wc_get_order( absint( $order_id ) );
-    if ( ! $order instanceof WC_Order ) {
-        return;
-    }
-
-    $url = $order->get_checkout_order_received_url();
-    if ( $url ) {
-        wp_safe_redirect( $url );
-        exit;
-    }
-}
-add_action( 'woocommerce_thankyou', 'hempweed_force_thankyou_redirect', 1 );
+});
