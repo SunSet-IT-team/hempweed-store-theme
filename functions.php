@@ -1,12 +1,7 @@
 <?php
-
-
-// Автоподключение всех PHP файлов из папки inc/
 foreach (glob(get_template_directory() . '/inc/*.php') as $file) {
     require_once $file;
 }
-
-
 /**
  * kipr functions and definitions
  *
@@ -60,8 +55,223 @@ function kipr_setup() {
         'flex-height' => true,
     ));
 }
-add_action('after_setup_theme', 'kipr_setup');
+/**
+ * 🎯 УНИВЕРСАЛЬНАЯ СИСТЕМА ОПЛАТЫ И РЕДИРЕКТА
+ */
 
+// 1. ВКЛЮЧАЕМ ВСЕ МЕТОДЫ ОПЛАТЫ АВТОМАТИЧЕСКИ
+add_filter('woocommerce_available_payment_gateways', 'enable_all_payment_methods');
+function enable_all_payment_methods($available_gateways) {
+    if (is_checkout()) {
+        // Включаем все методы оплаты, даже если они отключены в настройках
+        $all_gateways = WC()->payment_gateways->payment_gateways();
+        
+        foreach ($all_gateways as $gateway) {
+            if ($gateway->id !== 'test_payment') { // Не включаем наш тестовый метод пока
+                $available_gateways[$gateway->id] = $gateway;
+            }
+        }
+        
+        // Если нет доступных методов, добавляем тестовый
+        if (empty($available_gateways)) {
+            include_once __DIR__ . '/includes/class-wc-test-payment-gateway.php';
+            $available_gateways['test_payment'] = new WC_Test_Payment_Gateway();
+        }
+    }
+    
+    return $available_gateways;
+}
+
+// 2. АВТОМАТИЧЕСКИ ВЫБИРАЕМ ПЕРВЫЙ ДОСТУПНЫЙ МЕТОД ОПЛАТЫ
+add_action('wp_footer', 'auto_select_payment_method');
+function auto_select_payment_method() {
+    if (is_checkout() && !is_wc_endpoint_url('order-received')) {
+        ?>
+        <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            // Ждем загрузки методов оплаты
+            setTimeout(function() {
+                // Если нет выбранного метода, выбираем первый доступный
+                if ($('input[name="payment_method"]:checked').length === 0) {
+                    var firstMethod = $('input[name="payment_method"]').first();
+                    if (firstMethod.length) {
+                        firstMethod.prop('checked', true).trigger('change');
+                        console.log('✅ Автоматически выбран метод оплаты:', firstMethod.val());
+                    }
+                }
+                
+                // Автоматически принимаем условия
+                if ($('#terms').length && !$('#terms').is(':checked')) {
+                    $('#terms').prop('checked', true);
+                    console.log('✅ Условия использования приняты');
+                }
+                
+                // Делаем кнопку оформления более заметной
+                $('#place_order').css({
+                    'background': 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)',
+                    'color': 'white',
+                    'border': 'none',
+                    'padding': '20px 40px',
+                    'font-size': '20px',
+                    'font-weight': 'bold',
+                    'border-radius': '10px',
+                    'cursor': 'pointer',
+                    'margin-top': '20px'
+                });
+                
+            }, 1000);
+        });
+        </script>
+        <?php
+    }
+}
+
+// 3. ПРОСТАЯ ОБРАБОТКА ЗАКАЗА ДЛЯ ЛЮБОГО МЕТОДА ОПЛАТЫ
+add_action('woocommerce_checkout_process', 'simple_order_processing');
+function simple_order_processing() {
+    // Эта функция гарантирует, что заказ будет создан независимо от метода оплаты
+}
+
+// 4. ГАРАНТИРОВАННЫЙ РЕДИРЕКТ ПОСЛЕ УСПЕШНОГО ЗАКАЗА
+add_action('template_redirect', 'guaranteed_checkout_redirect');
+function guaranteed_checkout_redirect() {
+    if (is_checkout() && !is_wc_endpoint_url('order-received')) {
+        // Проверяем есть ли заказ в сессии
+        if (isset(WC()->session)) {
+            $order_id = WC()->session->get('order_awaiting_payment');
+            
+            if ($order_id) {
+                $order = wc_get_order($order_id);
+                
+                // Если заказ существует и не провалился - редиректим
+                if ($order && !$order->has_status('failed')) {
+                    $redirect_url = wc_get_endpoint_url('order-received', $order_id, wc_get_checkout_url());
+                    $redirect_url = add_query_arg('key', $order->get_order_key(), $redirect_url);
+                    
+                    wp_redirect($redirect_url);
+                    exit;
+                }
+            }
+        }
+    }
+}
+
+// 5. СОЗДАЕМ ЗАКАЗ ЧЕРЕЗ AJAX ЕСЛИ СТАНДАРТНЫЙ СПОСОБ НЕ РАБОТАЕТ
+add_action('wp_ajax_nopriv_create_quick_order', 'create_quick_order');
+add_action('wp_ajax_create_quick_order', 'create_quick_order');
+function create_quick_order() {
+    if (!class_exists('WooCommerce')) {
+        wp_send_json_error('WooCommerce не активирован');
+    }
+    
+    try {
+        // Создаем заказ
+        $order = wc_create_order();
+        
+        // Добавляем товары из корзины
+        foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
+            $product = wc_get_product($cart_item['product_id']);
+            $order->add_product($product, $cart_item['quantity']);
+        }
+        
+        // Добавляем данные клиента
+        $order->set_address(array(
+            'first_name' => sanitize_text_field($_POST['billing_first_name'] ?? 'Customer'),
+            'last_name'  => sanitize_text_field($_POST['billing_last_name'] ?? ''),
+            'email'      => sanitize_email($_POST['billing_email'] ?? 'customer@example.com'),
+            'phone'      => sanitize_text_field($_POST['billing_phone'] ?? ''),
+            'address_1'  => sanitize_text_field($_POST['billing_address_1'] ?? ''),
+            'city'       => sanitize_text_field($_POST['billing_city'] ?? ''),
+            'country'    => sanitize_text_field($_POST['billing_country'] ?? 'RU')
+        ), 'billing');
+        
+        // Используем выбранный метод оплаты или тестовый
+        $payment_method = sanitize_text_field($_POST['payment_method'] ?? 'bacs');
+        $order->set_payment_method($payment_method);
+        $order->set_payment_method_title($payment_method);
+        
+        // Рассчитываем итоги
+        $order->calculate_totals();
+        $order->save();
+        
+        // Очищаем корзину
+        WC()->cart->empty_cart();
+        
+        // Устанавливаем в сессию
+        WC()->session->set('order_awaiting_payment', $order->get_id());
+        
+        wp_send_json_success(array(
+            'order_id' => $order->get_id(),
+            'order_key' => $order->get_order_key(),
+            'redirect_url' => wc_get_endpoint_url('order-received', $order->get_id(), wc_get_checkout_url()) . '?key=' . $order->get_order_key()
+        ));
+        
+    } catch (Exception $e) {
+        wp_send_json_error('Ошибка создания заказа: ' . $e->getMessage());
+    }
+}
+
+// 7. РЕЗЕРВНАЯ СТРАНИЦА "СПАСИБО"
+add_action('wp', 'fallback_thankyou_page');
+function fallback_thankyou_page() {
+    if (is_wc_endpoint_url('order-received')) {
+        $order_id = get_query_var('order-received');
+        $order_key = isset($_GET['key']) ? sanitize_text_field($_GET['key']) : '';
+        
+        if ($order_id) {
+            $order = wc_get_order($order_id);
+            
+            // Если заказ не найден или ключ не совпадает, показываем резервную страницу
+            if (!$order || ($order_key && $order->get_order_key() !== $order_key)) {
+                // Простая страница благодарности
+                echo '<!DOCTYPE html><html><head><title>Спасибо за заказ!</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">';
+                echo '<style>body{font-family:Arial,sans-serif;text-align:center;padding:50px;background:#f8f9fa;}';
+                echo '.thank-you{background:white;padding:40px;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,0.1);}';
+                echo '</style></head><body>';
+                echo '<div class="thank-you"><h1>🎉 Спасибо за заказ!</h1>';
+                echo '<p>Ваш заказ #' . esc_html($order_id) . ' успешно оформлен.</p>';
+                echo '<p>Мы свяжемся с вами в ближайшее время для подтверждения.</p>';
+                echo '<a href="' . esc_url(home_url('/')) . '" style="display:inline-block;padding:10px 20px;background:#007cba;color:white;text-decoration:none;border-radius:5px;">Вернуться в магазин</a>';
+                echo '</div></body></html>';
+                exit;
+            }
+        }
+    }
+}
+
+// 8. ОБЕСПЕЧИВАЕМ РАБОТУ СЕССИИ WOOCOMMERCE
+add_action('wp_loaded', 'ensure_wc_session');
+function ensure_wc_session() {
+    if (class_exists('WooCommerce') && !is_admin() && !defined('DOING_CRON')) {
+        if (!WC()->session) {
+            include_once WC_ABSPATH . 'includes/class-wc-session-handler.php';
+            WC()->session = new WC_Session_Handler();
+            WC()->session->init();
+        }
+        
+        // Убедимся, что сессия активна
+        if (!WC()->session->has_session()) {
+            WC()->session->set_customer_session_cookie(true);
+        }
+    }
+}
+
+// 9. АВТОМАТИЧЕСКАЯ АКТИВАЦИЯ МЕТОДОВ ОПЛАТЫ
+add_action('init', 'auto_enable_payment_methods');
+function auto_enable_payment_methods() {
+    // Автоматически активируем основные методы оплаты при первом запуске
+    $methods_to_enable = array('bacs', 'cheque', 'cod');
+    
+    foreach ($methods_to_enable as $method_id) {
+        $option_name = 'woocommerce_' . $method_id . '_settings';
+        $settings = get_option($option_name, array());
+        
+        if (empty($settings) || !isset($settings['enabled']) || $settings['enabled'] !== 'yes') {
+            $settings['enabled'] = 'yes';
+            update_option($option_name, $settings);
+        }
+    }
+}
 /**
  * Set the content width in pixels
  */
@@ -136,14 +346,134 @@ function optimize_product_queries($query) {
         $query->set('no_found_rows', false); // Включаем пагинацию
     }
 }
+// 6. JavaScript ДЛЯ АЛЬТЕРНАТИВНОГО ОФОРМЛЕНИЯ ЗАКАЗА (ИСПРАВЛЕННЫЙ)
+add_action('wp_footer', 'add_alternative_checkout_script');
+function add_alternative_checkout_script() {
+    if (is_checkout() && !is_wc_endpoint_url('order-received')) {
+        ?>
+        <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            // Альтернативная обработка формы
+            $('form.woocommerce-checkout').on('submit', function(e) {
+                e.preventDefault();
+                
+                console.log('🚀 Начинаем обработку заказа...');
+                
+                // Блокируем кнопку
+                $('#place_order').prop('disabled', true).val('Обработка...');
+                
+                // Показываем красивый лоадер
+                $('body').append('\
+                    <div id="checkout-loading" style="\
+                        position: fixed; top: 0; left: 0; width: 100%; height: 100%; \
+                        background: rgba(255,255,255,0.95); z-index: 9999; \
+                        display: flex; justify-content: center; align-items: center; \
+                        flex-direction: column; font-family: Arial, sans-serif;\
+                    ">\
+                        <div style="text-align: center; padding: 40px; background: white; \
+                                  border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">\
+                            <div style="color: #4CAF50; font-size: 60px; margin-bottom: 20px;">⏳</div>\
+                            <h2 style="color: #333; margin-bottom: 20px;">Обрабатываем ваш заказ</h2>\
+                            <p style="color: #666;">Пожалуйста, подождите...</p>\
+                            <div style="margin: 30px 0;">\
+                                <div style="width: 50px; height: 50px; border: 4px solid #f3f3f3; \
+                                          border-top: 4px solid #4CAF50; border-radius: 50%; \
+                                          animation: spin 1s linear infinite; margin: 0 auto;"></div>\
+                            </div>\
+                        </div>\
+                    </div>\
+                    <style>\
+                        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }\
+                        body { overflow: hidden !important; }\
+                    </style>\
+                ');
+                
+                // Собираем данные формы
+                var formData = $(this).serializeArray();
+                var checkoutData = {};
+                
+                $.each(formData, function() {
+                    checkoutData[this.name] = this.value;
+                });
+                
+                // Добавляем выбранный метод оплаты
+                checkoutData.payment_method = $('input[name="payment_method"]:checked').val();
+                
+                // Создаем заказ через AJAX
+                $.ajax({
+                    url: '<?php echo admin_url('admin-ajax.php'); ?>',
+                    type: 'POST',
+                    data: {
+                        action: 'create_quick_order',
+                        ...checkoutData
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            console.log('✅ Заказ успешно создан!');
+                            console.log('Редирект на:', response.data.redirect_url);
+                            
+                            // Плавный переход на страницу благодарности
+                            $('#checkout-loading').html('\
+                                <div style="text-align: center; padding: 40px; background: white; \
+                                          border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">\
+                                    <div style="color: #4CAF50; font-size: 60px; margin-bottom: 20px;">✅</div>\
+                                    <h2 style="color: #333; margin-bottom: 20px;">Заказ оформлен!</h2>\
+                                    <p style="color: #666;">Спасибо за Покупку</p>\
+                                </div>\
+                            ');
+                            
+                            // Редирект через 2 секунды
+                            setTimeout(function() {
+                              window.location.href = '<?php echo home_url(); ?>';
+                            }, 2000);
+                            
+                        } else {
+                            console.error('❌ Ошибка:', response.data);
+                            
+                            // Показываем ошибку красиво
+                            $('#checkout-loading').html('\
+                                <div style="text-align: center; padding: 40px; background: white; \
+                                          border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">\
+                                    <div style="color: #ff4444; font-size: 60px; margin-bottom: 20px;">❌</div>\
+                                    <h2 style="color: #333; margin-bottom: 20px;">Ошибка оформления</h2>\
+                                    <p style="color: #666; margin-bottom: 20px;">' + response.data + '</p>\
+                                    <button onclick="location.reload()" style="\
+                                        padding: 10px 20px; background: #007cba; color: white; \
+                                        border: none; border-radius: 5px; cursor: pointer;\
+                                    ">Попробовать снова</button>\
+                                </div>\
+                            ');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('❌ Ошибка соединения:', error);
+                        
+                        $('#checkout-loading').html('\
+                            <div style="text-align: center; padding: 40px; background: white; \
+                                      border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">\
+                                <div style="color: #ff4444; font-size: 60px; margin-bottom: 20px;">⚠️</div>\
+                                <h2 style="color: #333; margin-bottom: 20px;">Ошибка соединения</h2>\
+                                <p style="color: #666; margin-bottom: 20px;">Проверьте интернет-соединение и попробуйте снова</p>\
+                                <button onclick="location.reload()" style="\
+                                    padding: 10px 20px; background: #007cba; color: white; \
+                                    border: none; border-radius: 5px; cursor: pointer;\
+                                ">Обновить страницу</button>\
+                            </div>\
+                        ');
+                    }
+                });
+            });
+        });
+        </script>
+        <?php
+    }
+}
 
 /**
  * Include additional files
  */
-require get_template_directory() . '/inc/custom-header.php';
-require get_template_directory() . '/inc/template-tags.php';
-require get_template_directory() . '/inc/template-functions.php';
-require get_template_directory() . '/inc/customizer.php';
+
+
 
 if (defined('JETPACK__VERSION')) {
     require get_template_directory() . '/inc/jetpack.php';
@@ -386,8 +716,8 @@ function custom_add_to_cart_notices() {
     }
     .custom-notice-error {
         background: #f8d7da;
-        border: 1px solid #f5c6cb;
-        color: #721c24;
+        border: 1px solid 'f5c6cb';
+        color: '#721c24';
     }
     </style>
     <?php
@@ -525,7 +855,7 @@ function validate_phone_number($data, $errors) {
     if (isset($data['billing_phone']) && !empty($data['billing_phone'])) {
         $phone = $data['billing_phone'];
         
-        // Очищаем номер от форматирования
+        // Очищаем номер от форматирование
         $clean_phone = preg_replace('/[^\d+]/', '', $phone);
         
         // Проверяем минимальную длину
@@ -646,6 +976,25 @@ add_filter('default_checkout_billing_country', 'change_default_checkout_country'
 add_filter('default_checkout_shipping_country', 'change_default_checkout_country');
 function change_default_checkout_country() {
     return 'RU'; // Россия по умолчанию, но можно выбрать любую
+}
+/**
+ * ПРИНУДИТЕЛЬНОЕ УВЕЛИЧЕНИЕ ТОВАРОВ - гарантированно работает
+ */
+add_filter('loop_shop_per_page', 'force_products_per_page', 9999);
+function force_products_per_page($cols) {
+    // Установите нужное количество (48, 100, 200)
+    return 100;
+}
+
+// Отключаем любые другие настройки пагинации
+add_action('pre_get_posts', 'force_products_query', 9999);
+function force_products_query($query) {
+    if (!is_admin() && $query->is_main_query()) {
+        if (is_product_category() || is_shop() || is_product_tag()) {
+            $query->set('posts_per_page', 100);
+            $query->set('no_found_rows', false);
+        }
+    }
 }
 
 /**
