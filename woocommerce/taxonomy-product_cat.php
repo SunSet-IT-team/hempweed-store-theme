@@ -10,10 +10,9 @@ if (!$category || !isset($category->term_id)) {
 // Массив для хранения ID уже выведенных товаров
 $displayed_products = [];
 
-// 1️⃣ Популярные товары (где ACF-поле total_sales = 1)
 $popular_args = [
     'post_type'      => 'product',
-    'posts_per_page' => 3,
+    'posts_per_page' => -1,
     'tax_query'      => [[
         'taxonomy' => 'product_cat',
         'field'    => 'id',
@@ -25,9 +24,10 @@ $popular_args = [
         'compare' => '='
     ]]
 ];
+
 $popular_products = new WP_Query($popular_args);
 
-// Сохраняем ID товаров из первой секции
+// Сохраняем ID популярных товаров
 if ($popular_products->have_posts()) {
     while ($popular_products->have_posts()) : $popular_products->the_post();
         $displayed_products[] = get_the_ID();
@@ -97,7 +97,8 @@ $other_args = [
     'tax_query'      => [[
         'taxonomy' => 'product_cat',
         'field'    => 'id',
-        'terms'    => $category->term_id
+        'terms'    => $category->term_id,
+        'operator' => 'NOT IN'
     ]]
 ];
 $other_products = new WP_Query($other_args);
