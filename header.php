@@ -23,7 +23,8 @@
 
 	<?php wp_head(); ?>
 </head>
-<div class="wrapper">
+<div class="scroll-container">
+  <div class="wrapper">
   <header class="header background-green">
     <div class="header__container container flex">
       <a href="/" class="heder__logo logo">
@@ -116,9 +117,6 @@
             </a>
             <div class="menu__dropdown_hidden" data-toggle="dropdown-4">
               <ul class="menu__dropdown direction _flex_col">
-                <li class="menu__dropdown-item">
-                  <a href="/about-us" class="menu__dropdown-link">About us</a>
-                </li>
                 <li class="menu__dropdown-item">
                   <a href="/partnership" class="menu__dropdown-link">Partnership</a>
                 </li>

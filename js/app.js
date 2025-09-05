@@ -5,6 +5,7 @@ import {categoriesItemAlert} from './funcs/categoriesItemAlert.js';
 import {openTabPictureModal} from './funcs/openTabPictureModal.js';
 import {accordion} from './funcs/accordion.js';
 import {burgerMenu} from './funcs/burgerMenu.js';
+import {scrollFix} from './funcs/scroll-fix.js';
 
 const importArray = [
   showHeaderPopup,
@@ -14,6 +15,7 @@ const importArray = [
   openTabPictureModal,
   accordion,
   burgerMenu,
+  scrollFix
 ]
 
 document.addEventListener('DOMContentLoaded', () => {
