@@ -32,6 +32,10 @@ html {
   overflow-x: hidden;
 }
 
+.bk15 {
+  z-index: -1;
+}
+
 /* Базовые стили для предотвращения двойного скролла */
 html, body {
     margin: 0;
@@ -121,10 +125,6 @@ html, body {
     .scroll-container {
         -ms-overflow-style: -ms-autohiding-scrollbar;
     }
-}
-
-.bk15 {
-  z-index: -1;
 }
 
 img {
