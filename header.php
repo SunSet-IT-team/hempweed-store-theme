@@ -58,7 +58,7 @@
             </div>
           </div>
           <div class="menu__section">
-            <a href="" class="menu__btn flex" data-toggle="dropdown-2">
+            <a href="/cannabinoids/" class="menu__btn flex" data-toggle="dropdown-2">
               <span>Cannabinoids</span>
               <img src="<?php echo get_template_directory_uri(); ?>/img/sistem/arrow.svg" alt="arrow" class="menu__btn-arrow">
             </a>

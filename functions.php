@@ -12,7 +12,6 @@ if (!defined('_S_VERSION')) {
 }
 
 // Увеличиваем лимит памяти
-define('WP_MEMORY_LIMIT', '512M');
 ini_set('memory_limit', '512M');
 
 /**
