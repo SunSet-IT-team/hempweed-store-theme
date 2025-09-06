@@ -118,6 +118,7 @@
   <script src="<?php echo get_template_directory_uri(); ?>/js/slider1.js"></script>
   <script src="<?php echo get_template_directory_uri(); ?>/js/main.js"></script>
   <script src="<?php echo get_template_directory_uri(); ?>/js/app.js" type="module"></script>
+    </div>
   </div>
   <?php wp_footer(); ?>
 </body>
