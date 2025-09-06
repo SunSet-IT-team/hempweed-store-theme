@@ -118,15 +118,6 @@ button[name="update_cart"]:disabled {
                           <?php echo wc_price($product_price); ?>
                         </td>
                         <td class="product-quantity">
-<<<<<<< HEAD
-                          <?php woocommerce_quantity_input( array( 
-                              'input_name' => "cart[{$cart_item_key}][qty]", 
-                              'input_value' => $cart_item['quantity'], 
-                              'classes' => ['cat__input'],
-                              'min_value' => 1,
-                              'max_value' => $_product->get_max_purchase_quantity()
-                          ) ); ?>
-=======
                 <?php 
           // Получаем объект продукта для текущего товара в корзине
                     $product = wc_get_product( $cart_item['product_id'] );
@@ -138,7 +129,6 @@ button[name="update_cart"]:disabled {
                     'max_value'   => $product->get_max_purchase_quantity()
                     ), $product );
                     ?>
->>>>>>> 37d4293 (Первоначальная версия сайта со всеми правками с хостинга)
                         </td>
                         <td class="product-subtotal" data-subtotal="<?php echo esc_attr($product_price * $cart_item['quantity']); ?>">
                             <?php echo wc_price($product_price * $cart_item['quantity']); ?>
