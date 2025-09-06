@@ -39,26 +39,28 @@
             <div class="menu__dropdown_hidden" data-toggle="dropdown-1">
                 <ul class="menu__dropdown direction _flex_col">
                     <?php
-                    $args = array(
-                        'taxonomy' => 'product_cat',
-                        'parent' => 0, // Вывести только родительские категории
-                        'hide_empty' => false, // Показывать пустые категории
-                    );
-                    $categories = get_terms($args);
-                    
-                    if (!empty($categories) && !is_wp_error($categories)) {
-                        foreach ($categories as $category) {
-                            echo '<li class="menu__dropdown-item">
-                                <a href="' . get_term_link($category) . '" class="menu__dropdown-link">' . $category->name . '</a>
-                            </li>';
-                        }
-                    }
-                    ?>
+$args = array(
+    'taxonomy' => 'product_cat',
+    'parent' => 0,
+    'hide_empty' => false,
+    'exclude' => array(Get_ID_By_Slug('cannabinoids')), // Исключаем категорию по ID
+);
+
+$categories = get_terms($args);
+
+if (!empty($categories) && !is_wp_error($categories)) {
+    foreach ($categories as $category) {
+        echo '<li class="menu__dropdown-item">
+                <a href="' . get_term_link($category) . '" class="menu__dropdown-link">' . $category->name . '</a>
+              </li>';
+    }
+}
+?>
                 </ul>
             </div>
           </div>
           <div class="menu__section">
-            <a href="/cannabinoids/" class="menu__btn flex" data-toggle="dropdown-2">
+            <a href="<?php echo get_term_link('cannabinoids', 'product_cat'); ?>" class="menu__btn flex" data-toggle="dropdown-2">
               <span>Cannabinoids</span>
               <img src="<?php echo get_template_directory_uri(); ?>/img/sistem/arrow.svg" alt="arrow" class="menu__btn-arrow">
             </a>

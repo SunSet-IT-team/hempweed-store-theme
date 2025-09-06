@@ -607,3 +607,9 @@ add_filter('default_checkout_shipping_country', 'change_default_checkout_country
 function change_default_checkout_country() {
     return 'RU'; // Россия по умолчанию, но можно выбрать любую
 }
+
+// Добавьте эту функцию в functions.php
+function Get_ID_By_Slug($slug) {
+    $term = get_term_by('slug', $slug, 'product_cat');
+    return $term ? $term->term_id : 0;
+}
