@@ -612,6 +612,10 @@ function change_default_checkout_country() {
     return 'RU'; // Россия по умолчанию, но можно выбрать любую
 }
 
+function Get_ID_By_Slug($slug) {
+    $term = get_term_by('slug', $slug, 'product_cat');
+    return $term ? $term->term_id : 0;
+}
 // Редирект после оформления заказа на кастомную страницу "Спасибо"
 add_filter( 'woocommerce_get_checkout_order_received_url', 'my_custom_thankyou_url', 10, 2 );
 
