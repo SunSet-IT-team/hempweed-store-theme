@@ -12,6 +12,10 @@ if (!defined('_S_VERSION')) {
 }
 
 // Увеличиваем лимит памяти
+if ( ! defined( 'WP_MEMORY_LIMIT' ) ) {
+    define( 'WP_MEMORY_LIMIT', '512M' );
+}
+
 ini_set('memory_limit', '512M');
 
 /**
@@ -611,4 +615,11 @@ function change_default_checkout_country() {
 function Get_ID_By_Slug($slug) {
     $term = get_term_by('slug', $slug, 'product_cat');
     return $term ? $term->term_id : 0;
+}
+// Редирект после оформления заказа на кастомную страницу "Спасибо"
+add_filter( 'woocommerce_get_checkout_order_received_url', 'my_custom_thankyou_url', 10, 2 );
+
+function my_custom_thankyou_url( $url, $order_id ) {
+    // Подставляем ссылку на твою страницу "Спасибо"
+    return site_url( '/thank-you/' );
 }
