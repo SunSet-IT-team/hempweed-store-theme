@@ -29,6 +29,7 @@
   z-index: -3;
 }
 
+.cosmetic__banner::before 
 .cosmetic__banner::before {
   z-index: -4;
   background-image: url(../../img/banners/cosmetic_banner.png);

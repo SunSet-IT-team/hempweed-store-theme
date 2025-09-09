@@ -1,0 +1,83 @@
+nav.woocommerce-pagination {
+  text-align: center;
+  margin: 28px 0 40px;
+}
+
+nav.woocommerce-pagination ul.page-numbers {
+  display: inline-flex;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  align-items: center;
+  justify-content: center;
+}
+
+nav.woocommerce-pagination ul.page-numbers li {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+
+nav.woocommerce-pagination ul.page-numbers li a.page-numbers,
+nav.woocommerce-pagination ul.page-numbers li span.page-numbers {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;      
+  height: 36px;          
+  padding: 0 10px;
+  border-radius: 4px;
+  border: 1px solid #d9cfd6; 
+  background: #ffffff;
+  color: #222222;
+  font-weight: 600;
+  text-decoration: none;
+  box-sizing: border-box;
+  line-height: 1;
+  transition: background .12s ease, border-color .12s ease;
+}
+
+nav.woocommerce-pagination ul.page-numbers li a.page-numbers:hover {
+  background: #faf7ff;
+  border-color: #d0c1e0;
+  color: #2b1b3b;
+}
+
+nav.woocommerce-pagination ul.page-numbers li span.page-numbers.current {
+  background: #efe8f6;        
+  border-color: #cfc0e7;
+  color: #4a2b68;            
+}
+
+nav.woocommerce-pagination ul.page-numbers li a.prev.page-numbers,
+nav.woocommerce-pagination ul.page-numbers li a.next.page-numbers {
+  min-width: 36px;
+  height: 36px;
+  padding: 0;
+}
+
+nav.woocommerce-pagination ul.page-numbers li span.prev.page-numbers,
+nav.woocommerce-pagination ul.page-numbers li span.next.page-numbers,
+nav.woocommerce-pagination ul.page-numbers li a.page-numbers[aria-disabled="true"] {
+  opacity: 0.45;
+  pointer-events: none;
+  cursor: default;
+}
+
+@media (max-width: 480px) {
+  nav.woocommerce-pagination ul.page-numbers li a.page-numbers,
+  nav.woocommerce-pagination ul.page-numbers li span.page-numbers {
+    min-width: 30px;
+    height: 30px;
+    padding: 0 6px;
+    font-size: 14px;
+  }
+}
+
+nav.woocommerce-pagination ul.page-numbers li,
+nav.woocommerce-pagination ul.page-numbers li a.page-numbers,
+nav.woocommerce-pagination ul.page-numbers li span.page-numbers {
+  float: none !important;
+  display: inline-flex !important;
+  vertical-align: middle;
+}

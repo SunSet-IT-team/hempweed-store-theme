@@ -138,6 +138,7 @@ echo '<style>
                 </div>
             </div>
         </div>
+        <img src="<?php echo get_template_directory_uri(); ?>/img/home/cannabis-marijuana-leaf-closeup.png" alt="" class="banner__img img">
         <img src="<?php echo get_template_directory_uri(); ?>/img/background/background-list/bk1.png" class="back__img bk1 back__left">
     </section>
 

@@ -126,7 +126,7 @@ get_header();
     </div>
   </section>
 
- <section class="relative">
+  <section class="relative">
     <div id="new-items" class="new-items column container padding-bot-100 _p_rel">
         <h2 class="title size-40 center">New Items</h2>
         <?php
@@ -171,6 +171,6 @@ get_header();
     </div>
     <img src="<?php echo get_template_directory_uri(); ?>/img/background/background-list/bk2.png" class="back__img bk2 back__left">
     <img src="<?php echo get_template_directory_uri(); ?>/img/background/background-list/bk8.png" class="back__img bk8 back__right">
- </section>
+  </section>
 
 <?php get_footer(); ?>
