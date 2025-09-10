@@ -61,11 +61,10 @@ if (!empty($categories) && !is_wp_error($categories)) {
             </div>
           </div>
           <div class="menu__section">
-    <a href="<?php echo site_url('/cannabiniods-page'); ?>" class="menu__btn flex" data-toggle="dropdown-2">
+    <a href="<?php echo site_url('/cannabinoids-page'); ?>" class="menu__btn flex" data-toggle="dropdown-2">
     <span>Cannabinoids</span>
     <img src="<?php echo get_template_directory_uri(); ?>/img/sistem/arrow.svg" alt="arrow" class="menu__btn-arrow">
-</a>
-
+    </a>
     <div class="menu__dropdown_hidden" data-toggle="dropdown-2">
         <ul class="menu__dropdown direction _flex_col">
             <?php

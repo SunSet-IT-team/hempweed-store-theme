@@ -618,3 +618,33 @@ function my_custom_thankyou_url( $url, $order_id ) {
     // Подставляем ссылку на твою страницу "Спасибо"
     return site_url( '/thank-you/' );
 }
+
+// Регистрируем таксономию "Cannabinoids"
+function register_cannabinoids_taxonomy() {
+    $labels = array(
+        'name'              => 'Cannabinoids',
+        'singular_name'     => 'Cannabinoid',
+        'search_items'      => 'Search Cannabinoids',
+        'all_items'         => 'All Cannabinoids',
+        'parent_item'       => 'Parent Cannabinoid',
+        'parent_item_colon' => 'Parent Cannabinoid:',
+        'edit_item'         => 'Edit Cannabinoid',
+        'update_item'       => 'Update Cannabinoid',
+        'add_new_item'      => 'Add New Cannabinoid',
+        'new_item_name'     => 'New Cannabinoid',
+        'menu_name'         => 'Cannabinoids',
+    );
+
+    $args = array(
+        'hierarchical'      => true, // как категории (true), а не как теги (false)
+        'labels'            => $labels,
+        'show_ui'           => true,
+        'show_admin_column' => true,
+        'query_var'         => true,
+        'rewrite'           => array( 'slug' => 'cannabinoids' ),
+    );
+
+    // Подвязываем к товарам (product)
+    register_taxonomy( 'cannabinoids', array( 'product' ), $args );
+}
+add_action( 'init', 'register_cannabinoids_taxonomy' );
