@@ -66,26 +66,26 @@ if (!empty($categories) && !is_wp_error($categories)) {
     <img src="<?php echo get_template_directory_uri(); ?>/img/sistem/arrow.svg" alt="arrow" class="menu__btn-arrow">
     </a>
     <div class="menu__dropdown_hidden" data-toggle="dropdown-2">
-        <ul class="menu__dropdown direction _flex_col">
-            <?php
-            $args = array(
-                'taxonomy' => 'product_cat',
-                'parent' => 0,
-                'hide_empty' => false,
-                'exclude' => Get_ID_By_Slug('cannabinoids') // Исключаем категорию cannabinoids
-            );
-            $categories = get_terms($args);
-            
-            if (!empty($categories) && !is_wp_error($categories)) {
-                foreach ($categories as $category) {
-                    echo '<li class="menu__dropdown-item">
-                        <a href="' . get_term_link($category) . '" class="menu__dropdown-link">' . $category->name . '</a>
+    <ul class="menu__dropdown direction _flex_col">
+        <?php
+        $args = array(
+            'taxonomy'   => 'cannabinoids', // вместо product_cat
+            'hide_empty' => false
+        );
+
+        $terms = get_terms($args);
+
+        if (!empty($terms) && !is_wp_error($terms)) {
+            foreach ($terms as $term) {
+                echo '<li class="menu__dropdown-item">
+                        <a href="' . get_term_link($term) . '" class="menu__dropdown-link">' . $term->name . '</a>
                     </li>';
-                }
             }
-            ?>
-        </ul>
-    </div>
+        }
+        ?>
+    </ul>
+</div>
+
           </div>
           <div class="menu__section">
             <a href="/news/" class="menu__btn flex" data-toggle="dropdown-3">
