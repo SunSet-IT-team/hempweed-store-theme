@@ -14,11 +14,11 @@ product__featured._cosmectic__products {
   display: flex;
 }
 
-.product__featured a:nth-child(2n){
+.product__featured a:nth-child(2n) {
   flex-direction: row-reverse;
 }
 
-.product__featured-link{
+.product__featured-link {
   width: 100%;
   display: flex;
   gap: 20px;
@@ -28,25 +28,25 @@ product__featured._cosmectic__products {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
 
-.size-36{
+.size-36 {
   font-size: 36px;
   line-height: 120%;
 }
 
-.product__featured-inform{
+.product__featured-inform {
   display: flex;
   flex-direction: column;
   gap: 10px;
   max-width: 60%;
 }
 
-.product__featured-link .img{
+.product__featured-link .img {
   max-width: 342px;
   max-height: 296px;
   width: 100%;
 }
 
-.product__featured-link .price{
+.product__featured-link .price {
   position: static;
   display: flex;
   gap: 6px;
@@ -57,13 +57,13 @@ product__featured._cosmectic__products {
   box-shadow: var(--boxShadow-px) var(--boxShadow_1);
   max-width: 377px;
   width: var(--proc-100);
-/*   height: var(--proc-100); */
+  /*   height: var(--proc-100); */
   overflow: hidden;
   padding: var(--spacing-px-28) var(--spacing-px-30) var(--spacing-px-17);
   gap: var(--spacing-px-0);
 }
 
-.category-product .new-items__item  img {
+.category-product .new-items__item img {
   width: var(--proc-100);
   height: var(--proc-100);
   object-fit: content;
@@ -72,11 +72,11 @@ product__featured._cosmectic__products {
   max-height: 160px;
 }
 
-.category-product .new-items__item  h3 {
+.category-product .new-items__item h3 {
   font-size: 15px;
 }
 
-.category-product .new-items__item  h3 i {
+.category-product .new-items__item h3 i {
   opacity: 0.7;
   font-style: normal;
 }
@@ -84,13 +84,12 @@ product__featured._cosmectic__products {
 .price {
   margin-top: var(--spacing-px-0);
   top: var(--spacing-px-28);
-  right: var(--spacing-px-30);
 }
 
 .price,
-.price > *,
+.price>*,
 .price .woocommerce-Price-currencySymbol {
-  color: var(--color00732e)!important;
+  color: var(--color00732e) !important;
 }
 
 .description__list {
@@ -102,7 +101,7 @@ product__featured._cosmectic__products {
   justify-content: center;
 }
 
-.new-items__group .product{
+.new-items__group .product {
   width: 30%;
 }
 
@@ -110,14 +109,14 @@ product__featured._cosmectic__products {
   width: var(--proc-100);
 }
 
-.product .price{
+.product .price {
   font-family: var(--font-family);
   font-weight: 400;
   font-size: 26px;
   color: var(--color-6) !important;
 }
 
-.product .price span{
+.product .price span {
   color: #000 !important;
 }
 
@@ -164,6 +163,46 @@ product__featured._cosmectic__products {
   border-radius: var(--spacing-px-30);
 }
 
+.product-badge.out {
+  background: #c0392b;
+  /* красная плашка */
+  color: #fff;
+}
+
+/* Надписи в карточке */
+.stock-info {
+  font-size: 22px;
+  /* transform: translateY(80px); */
+  font-weight: 500;
+  margin: 30px 0 10px;
+  color: #c0392b;
+}
+
+.stock-info.low {
+  color: #e67e22;
+  /* оранжевая надпись */
+}
+
+.out-of-stock-badge {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 17px;
+  color: #EFE8D6;
+  background: var(--color3);
+  text-transform: uppercase;
+  border-radius: 100px;
+  width: 152px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+
 
 @media screen and (max-width: 1200px) {
   .new-items__group .product {
@@ -178,12 +217,12 @@ product__featured._cosmectic__products {
     font-size: var(--spacing-px-22);
   }
 
-  .description__item p{
+  .description__item p {
     font-size: var(--spacing-px-28);
   }
 
-  .price, .price > *, .price .woocommerce-Price-currencySymbol {
-    font-size: var(--spacing-px-22)!important;
+  .price, .price>*, .price .woocommerce-Price-currencySymbol {
+    font-size: var(--spacing-px-22) !important;
   }
 }
 
@@ -198,14 +237,12 @@ product__featured._cosmectic__products {
 }
 
 @media screen and (max-width: 900px) {
-  .category-product._top  .new-items__item {
+  .category-product._top .new-items__item {
     padding: var(--spacing-px-18) var(--spacing-px-14) var(--spacing-px-17);
   }
 }
 
-@media screen and (max-width: 800px) {
-  
-}
+@media screen and (max-width: 800px) {}
 
 @media screen and (max-width: 768px) {
   .product h3 {
@@ -215,6 +252,7 @@ product__featured._cosmectic__products {
   .product .price {
     font-size: var(--spacing-px-20);
   }
+
   .new-items__group .product {
     width: var(--proc-100);
   }
@@ -239,8 +277,8 @@ product__featured._cosmectic__products {
     max-width: unset;
   }
 
-  .price, .price > *, .price .woocommerce-Price-currencySymbol {
-    font-size: var(--spacing-px-18)!important;
+  .price, .price>*, .price .woocommerce-Price-currencySymbol {
+    font-size: var(--spacing-px-18) !important;
   }
 
   .category-product .new-items__item img {
@@ -249,28 +287,28 @@ product__featured._cosmectic__products {
     max-height: 160px;
   }
 
-  .product__featured a{
+  .product__featured a {
     flex-direction: column !important;
   }
 
-  .product__featured .product__featured-inform{
+  .product__featured .product__featured-inform {
     max-width: 100%;
     text-align: center;
   }
-  
-  .product__featured-link .price{
+
+  .product__featured-link .price {
     position: absolute;
   }
 
-  .product__featured-link{
+  .product__featured-link {
     gap: 6px;
   }
 
-  ._cosmectic__products._top{
+  ._cosmectic__products._top {
     gap: 10px;
   }
 
-  .size-36{
+  .size-36 {
     font-size: var(--spacing-px-20);
   }
 }
@@ -285,7 +323,7 @@ product__featured._cosmectic__products {
   }
 
   .category-product._top .new-items__item img {
-	  max-height: 322px;
+    max-height: 322px;
   }
 }
 
@@ -295,6 +333,6 @@ product__featured._cosmectic__products {
   }
 
   .category-product._top .new-items__item img {
-	  max-height: 322px;
+    max-height: 322px;
   }
 }
