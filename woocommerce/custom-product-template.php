@@ -43,6 +43,22 @@ get_header(); ?>
                     <div class="cat__text text">
                         <p class="_fs_30 _fw_400"><?php echo $description; ?></p>
                     </div>
+                        <?php 
+$stock_quantity = $product->get_stock_quantity();
+
+if ($stock_quantity === 0) {
+    echo '<p class="stock-info">Out of stock</p>';
+    echo '<script>document.addEventListener("DOMContentLoaded", function() {
+        let btn = document.querySelector(".single_add_to_cart_button");
+        if(btn){ btn.setAttribute("disabled", "disabled"); }
+    });</script>';
+} elseif ($stock_quantity > 0 && $stock_quantity < 10) {
+    echo '<p class="stock-info low-stock">There are ' . $stock_quantity . ' pieces left</p>';
+}
+?>
+
+
+
 
                     <div class="cat__form_cntr _flex_center_sb">
                         <!-- цена -->
@@ -53,8 +69,6 @@ get_header(); ?>
 <form class="cat__form" method="post">
     <!-- скрытое поле с ID товара -->
     <input type="hidden" name="add-to-cart" value="<?php echo get_the_ID(); ?>">
-    
-
 
     <button class="cat__add_btn _fs_24 _fw_400 _flex_center _yellow_btn _btn_hover"
             type="submit"
@@ -63,9 +77,6 @@ get_header(); ?>
         <?php echo esc_html__('Add to cart', 'woocommerce'); ?>
     </button>
 </form>
-
-					
-
                     </div>
                 </div>
             </div>
@@ -99,7 +110,7 @@ get_header(); ?>
     <?php endif; ?>
 
 
-     <!-- Разметка для табов -->
+    <!-- Разметка для табов -->
 <div class="relative">
     <?php 
         // Проверяем наличие данных

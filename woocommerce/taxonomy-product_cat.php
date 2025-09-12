@@ -153,6 +153,21 @@ echo '<style>
                     <img src="<?php echo get_the_post_thumbnail_url($product_id, 'medium'); ?>" alt="<?php the_title(); ?>" class="img">
                 <?php endif; ?>
                 <h3 class="size-20"><?php the_title(); ?></h3>
+                <?php
+$prod_obj = wc_get_product( $product_id );
+if ( $prod_obj ) {
+    $stock_status = $prod_obj->get_stock_status();
+    $stock_qty = $prod_obj->managing_stock() ? (int) $prod_obj->get_stock_quantity() : null;
+
+    $is_oos = ( $stock_status === 'outofstock' || ( $stock_qty !== null && $stock_qty <= 0 ) );
+
+    if ( $is_oos ) {
+        echo '<span class="out-of-stock-badge">Out of stock</span>';
+    }
+}
+?>
+
+
                 <span class="size-26 price _p_abs">from <?php echo $product->get_price_html(); ?></span>
             </a>
         <?php endwhile; wp_reset_postdata(); ?>
@@ -177,7 +192,7 @@ echo '<style>
     <section class="popular background__yellow">
         <div class="popular__container _p_rel column container">
             <div class="popular__title">
-                <h2 class="title size-50 center">New Arrivals</h2>
+                <h2 class="title size-50 center">popular items</h2>
             </div>
 
             <div class="swiper popular__slider">
@@ -188,7 +203,24 @@ echo '<style>
                     ?>
                         <div class="swiper-slide">
                             <a href="<?php the_permalink(); ?>" class="product new-items__item _slider_item _p_rel">
-                                <span class="new">New</span>
+                                <?php
+$prod_obj = wc_get_product( $product_id );
+if ( $prod_obj ) {
+    $stock_status = $prod_obj->get_stock_status();
+    $stock_qty = $prod_obj->managing_stock() ? (int) $prod_obj->get_stock_quantity() : null;
+
+    $is_oos = ( $stock_status === 'outofstock' || ( $stock_qty !== null && $stock_qty <= 0 ) );
+
+    if ( $is_oos ) {
+        echo '<span class="out-of-stock-badge">Out of stock</span>';
+    } else {
+        // Для New arrivals — показываем New (только если товар сюда попал)
+        echo '<span class="new">New</span>';
+    }
+}
+?>
+
+
                                 <?php if (has_post_thumbnail()) : ?>
                                     <img src="<?php echo get_the_post_thumbnail_url($product_id, 'medium'); ?>" alt="<?php the_title(); ?>" class="img">
                                 <?php endif; ?>
@@ -252,6 +284,22 @@ echo '<style>
                                 <img src="<?php echo get_the_post_thumbnail_url($product_id, 'medium'); ?>" alt="<?php the_title(); ?>">
                             <?php endif; ?>
                             <h3><?php the_title(); ?></h3>
+<?php
+$prod_obj = wc_get_product( $product_id );
+if ( $prod_obj ) {
+    $stock_status = $prod_obj->get_stock_status();
+    $stock_qty = $prod_obj->managing_stock() ? (int) $prod_obj->get_stock_quantity() : null;
+
+    $is_oos = ( $stock_status === 'outofstock' || ( $stock_qty !== null && $stock_qty <= 0 ) );
+
+    if ( $is_oos ) {
+        echo '<span class="out-of-stock-badge">Out of stock</span>';
+    }
+}
+?>
+
+
+
                             <span class="price">from <?php echo $product->get_price_html(); ?></span>
                         </a>
 

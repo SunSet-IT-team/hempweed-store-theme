@@ -284,11 +284,19 @@ main {
   cursor: pointer;
 }
 
-.arrow:after {
-  font-size: 30px !important;
-  text-align: center;
-  color: #000;
+.swiper-button-next svg.swiper-navigation-icon,
+.swiper-button-prev svg.swiper-navigation-icon {
+    width: 30px !important;      /* ширина стрелки */
+    height: 30px !important;     /* высота стрелки */
+    pointer-events: none;         /* клики проходят к кнопке */
 }
+
+/* Меняем цвет стрелки */
+.swiper-button-next svg.swiper-navigation-icon path,
+.swiper-button-prev svg.swiper-navigation-icon path {
+    fill: #000 !important;       /* нужный цвет */
+}
+
 
 .new-items__slider {
   position: relative;

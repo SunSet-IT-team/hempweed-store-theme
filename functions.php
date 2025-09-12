@@ -648,3 +648,102 @@ function register_cannabinoids_taxonomy() {
     register_taxonomy( 'cannabinoids', array( 'product' ), $args );
 }
 add_action( 'init', 'register_cannabinoids_taxonomy' );
+// 1) Показываем плашку в каталоге (на карточке товара)
+add_action('woocommerce_before_shop_loop_item_title', 'my_custom_stock_badge', 10);
+function my_custom_stock_badge() {
+    global $product;
+    if ( ! $product ) return;
+
+    // Если товар не в наличии
+    if ( ! $product->is_in_stock() ) {
+        echo '<span class="custom-badge out-of-stock">Out of stock</span>';
+        return;
+    }
+
+    // Если управляется запасами и остаток < 10
+    if ( $product->managing_stock() ) {
+        $qty = (int) $product->get_stock_quantity();
+        if ( $qty > 0 && $qty < 10 ) {
+            echo '<span class="custom-badge low-stock">There are ' . esc_html( $qty ) . ' pieces left</span>';
+        }
+    }
+}
+
+// 2) В single product выводим сообщение под ценой
+add_action('woocommerce_single_product_summary', 'my_single_stock_message', 25);
+function my_single_stock_message() {
+    global $product;
+    if ( ! $product ) return;
+
+    if ( ! $product->is_in_stock() ) {
+        echo '<p class="custom-stock-message out-of-stock">Out of stock</p>';
+        return;
+    }
+
+    if ( $product->managing_stock() ) {
+        $qty = (int) $product->get_stock_quantity();
+        if ( $qty > 0 && $qty < 10 ) {
+            echo '<p class="custom-stock-message low-stock">There are ' . esc_html( $qty ) . ' pieces left</p>';
+        }
+    }
+}
+
+// 3) Серверная защита: блокируем покупку, если товар фактически не в наличии
+add_filter('woocommerce_is_purchasable', 'my_disable_purchase_if_oos', 10, 2);
+function my_disable_purchase_if_oos( $purchasable, $product ) {
+    if ( ! $product ) return $purchasable;
+
+    // Если товар не в наличии — делаем непокупаемым (вернёт false)
+    if ( ! $product->is_in_stock() ) {
+        return false;
+    }
+
+    return $purchasable;
+}
+
+// 4) В каталоге заменяем кнопку на неактивную для OOS
+add_filter('woocommerce_loop_add_to_cart_link', 'my_loop_add_to_cart_replace', 10, 2);
+function my_loop_add_to_cart_replace( $html, $product ) {
+    if ( ! $product ) return $html;
+
+    if ( ! $product->is_in_stock() ) {
+        // Ссылка ведёт на страницу товара; класс disabled — для стилей
+        return '<a class="button out-of-stock disabled" href="' . esc_url( get_permalink( $product->get_id() ) ) . '" aria-disabled="true">Out of stock</a>';
+    }
+
+    return $html;
+}
+
+// 5) Подключаем JS только на странице товара (для вариативных товаров)
+add_action('wp_enqueue_scripts', 'my_enqueue_stock_scripts');
+function my_enqueue_stock_scripts() {
+    if ( is_product() ) {
+        wp_enqueue_script(
+            'my-variation-stock',
+            get_stylesheet_directory_uri() . '/js/my-variation-stock.js',
+            array('jquery'),
+            '1.0',
+            true
+        );
+    }
+}
+
+add_filter( 'woocommerce_add_to_cart_validation', function( $passed, $product_id, $quantity ) {
+    $p = wc_get_product( $product_id );
+    if ( ! $p ) return $passed;
+
+    $stock_status = $p->get_stock_status();
+    $stock_qty = $p->managing_stock() ? (int) $p->get_stock_quantity() : null;
+
+    if ( $stock_status === 'outofstock' || ( $p->managing_stock() && $stock_qty <= 0 ) ) {
+        wc_add_notice( __( 'Sorry, this product is out of stock and cannot be added to the cart.', 'woocommerce' ), 'error' );
+        return false;
+    }
+
+    if ( $p->managing_stock() && $quantity > $stock_qty ) {
+        wc_add_notice( sprintf( __( 'Only %d left in stock.', 'woocommerce' ), $stock_qty ), 'error' );
+        return false;
+    }
+
+    return $passed;
+}, 10, 3 );
