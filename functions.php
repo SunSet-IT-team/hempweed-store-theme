@@ -701,18 +701,29 @@ function my_disable_purchase_if_oos( $purchasable, $product ) {
     return $purchasable;
 }
 
-// 4) В каталоге заменяем кнопку на неактивную для OOS
-add_filter('woocommerce_loop_add_to_cart_link', 'my_loop_add_to_cart_replace', 10, 2);
-function my_loop_add_to_cart_replace( $html, $product ) {
-    if ( ! $product ) return $html;
+add_action('woocommerce_before_shop_loop_item', 'disable_custom_add_to_cart_button', 10);
+add_action('woocommerce_before_single_product', 'disable_custom_add_to_cart_button', 10);
 
-    if ( ! $product->is_in_stock() ) {
-        // Ссылка ведёт на страницу товара; класс disabled — для стилей
-        return '<a class="button out-of-stock disabled" href="' . esc_url( get_permalink( $product->get_id() ) ) . '" aria-disabled="true">Out of stock</a>';
+function disable_custom_add_to_cart_button() {
+    global $product;
+    if (!$product) return;
+
+    // Если товара нет в наличии, передаем JS через wp_add_inline_script
+    if (!$product->is_in_stock()) {
+        ?>
+        <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            var buttons = document.querySelectorAll('button.cat__add_btn[data-product_id="<?php echo $product->get_id(); ?>"]');
+            buttons.forEach(function(btn) {
+                btn.classList.add('disabled');
+                btn.setAttribute('disabled', 'disabled');
+            });
+        });
+        </script>
+        <?php
     }
-
-    return $html;
 }
+
 
 // 5) Подключаем JS только на странице товара (для вариативных товаров)
 add_action('wp_enqueue_scripts', 'my_enqueue_stock_scripts');

@@ -66,17 +66,33 @@ if ($stock_quantity === 0) {
                         <!-- количество -->
                         <input class="cat__input" type="number" name="quantity" value="1" min="1">
             <!-- Добавить в корзину -->
+<?php 
+global $product;
+$stock_quantity = $product->get_stock_quantity(); // остаток товара
+$is_in_stock = $product->is_in_stock();          // проверка наличия
+
+// Если товара нет в наличии — добавляем класс и disabled
+$disabled_class = '';
+$disabled_attr  = '';
+if (!$is_in_stock || $stock_quantity <= 0) {
+    $disabled_class = ' disabled';
+    $disabled_attr  = ' disabled="disabled"';
+}
+?>
+
 <form class="cat__form" method="post">
     <!-- скрытое поле с ID товара -->
     <input type="hidden" name="add-to-cart" value="<?php echo get_the_ID(); ?>">
 
-    <button class="cat__add_btn _fs_24 _fw_400 _flex_center _yellow_btn _btn_hover"
+    <button class="cat__add_btn _fs_24 _fw_400 _flex_center _yellow_btn _btn_hover<?php echo $disabled_class; ?>"
             type="submit"
             data-product_id="<?php echo get_the_ID(); ?>"
-            data-product_name="<?php echo esc_attr(get_the_title()); ?>">
+            data-product_name="<?php echo esc_attr(get_the_title()); ?>"
+            <?php echo $disabled_attr; ?>>
         <?php echo esc_html__('Add to cart', 'woocommerce'); ?>
     </button>
 </form>
+
                     </div>
                 </div>
             </div>

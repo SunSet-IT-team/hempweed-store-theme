@@ -1370,6 +1370,16 @@ p.form-row.form-row-first button, .checkout .button, .form-row button {
   color: #c0392b;
 }
 
+.cat__add_btn.disabled {
+    pointer-events: none;   
+    opacity: 0.5;           
+    cursor: not-allowed;    
+    background-color: #ccc; 
+    color: #666;            
+}
+
+
+
 @media screen and (max-width: 1200px) {
   .card {
     margin-left: var(--auto);
