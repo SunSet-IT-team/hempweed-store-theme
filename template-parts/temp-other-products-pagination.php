@@ -12,16 +12,20 @@ if ( get_query_var('product-page') ) {
     $current = absint( get_query_var('paged') );
 }
 
-// WP_Query: товары только из категории cannabinoids
+// WP_Query: товары только из таксономии cannabinoids (любые термы)
 $args = [
     'post_type'      => 'product',
     'posts_per_page' => 12, // 12 товаров на страницу
     'paged'          => $current,
     'post__not_in'   => $displayed_products,
     'tax_query'      => [[
-        'taxonomy' => 'product_cat',
+        'taxonomy' => 'cannabinoids',
         'field'    => 'slug',
-        'terms'    => 'cannabinoids',
+        'terms'    => get_terms([
+            'taxonomy'   => 'cannabinoids',
+            'fields'     => 'slugs',
+            'hide_empty' => true,
+        ]),
         'operator' => 'IN'
     ]]
 ];
@@ -32,14 +36,13 @@ $query = new WP_Query( $args );
 <?php if ( $query->have_posts() ) : ?>
     <section class="relative">
         <div class="product__other_section _p_rel _flex_col_center container">
-            <h2 class="title size-50 center">Other products</h2>
+            <h2 class="title size-50 center">Products</h2>
 
             <div class="product__other_slider">
                 <div class="product__other_slider_wrapper">
                     <?php
                     $counter = 0;
                     while ( $query->have_posts() ) : $query->the_post();
-                        // Открываем обёртку строки каждые 3 карточки
                         if ( $counter % 3 == 0 ) : ?>
                             <div class="product__other_slider_wrapper_item">
                                 <div class="product__other_slider_wrapper_item_cntr">
@@ -49,14 +52,12 @@ $query = new WP_Query( $args );
 
                         <?php
                         $counter++;
-                        // Закрываем строку после 3 карточек
                         if ( $counter % 3 == 0 ) : ?>
                                 </div>
                             </div>
                         <?php endif;
                     endwhile;
 
-                    // Если последний ряд неполный — закрыть его
                     if ( $counter % 3 != 0 ) : ?>
                                 </div>
                             </div>
@@ -64,33 +65,28 @@ $query = new WP_Query( $args );
                 </div>
             </div>
 
-            <!-- --- Точная пагинация в стиле WooCommerce (nav.woocommerce-pagination > ul.page-numbers > li ... ) --- -->
+            <!-- Пагинация -->
             <?php
             $total = $query->max_num_pages;
-
             if ( $total > 1 ) :
-                // Базовый URL: текущий URL без параметров product-page/paged
                 $base_url = remove_query_arg( array( 'product-page', 'paged' ) );
                 echo '<nav class="woocommerce-pagination" aria-label="Product Pagination">';
                 echo '<ul class="page-numbers">';
 
-                // Prev
                 if ( $current > 1 ) {
                     $prev_link = esc_url( add_query_arg( 'product-page', $current - 1, $base_url ) );
                     echo '<li><a class="prev page-numbers" href="' . $prev_link . '">&larr;</a></li>';
                 }
 
-                // Номера страниц
                 for ( $i = 1; $i <= $total; $i++ ) {
                     if ( $i === $current ) {
-                        echo '<li><span aria-label="Page ' . $i . '" aria-current="page" class="page-numbers current">' . $i . '</span></li>';
+                        echo '<li><span class="page-numbers current">' . $i . '</span></li>';
                     } else {
                         $page_link = esc_url( add_query_arg( 'product-page', $i, $base_url ) );
-                        echo '<li><a aria-label="Page ' . $i . '" class="page-numbers" href="' . $page_link . '">' . $i . '</a></li>';
+                        echo '<li><a class="page-numbers" href="' . $page_link . '">' . $i . '</a></li>';
                     }
                 }
 
-                // Next
                 if ( $current < $total ) {
                     $next_link = esc_url( add_query_arg( 'product-page', $current + 1, $base_url ) );
                     echo '<li><a class="next page-numbers" href="' . $next_link . '">&rarr;</a></li>';
@@ -100,8 +96,6 @@ $query = new WP_Query( $args );
                 echo '</nav>';
             endif;
             ?>
-            <!-- --- /Пагинация --- -->
-
         </div>
     </section>
 <?php endif; wp_reset_postdata(); ?>

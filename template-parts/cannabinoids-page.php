@@ -17,7 +17,7 @@ get_header();
                         </a>
                     </li>
                     <li>/</li>
-                    <li>Cannabiniodss</li> 
+                    <li>Cannabiniods</li> 
                 </ul>
                 <div class="cannabiniods__banner_text _banner_text_cntr _flex_col">
                     <h1 class="title size-50 _heading"><?php the_field('cannabiniods__title'); ?></h1>
@@ -35,36 +35,37 @@ get_header();
     <section id="categories" class="categories container padding-bot-100 padding-top-60 _p_rel">
     <ul class="categories__grid flex">
         <?php
-        $product_categories = get_terms(
-            array(
-                'taxonomy'   => 'product_cat',
-                'hide_empty' => false,
-                'posts_per_page' => -1 // Изменил на -1, так как -6 не имеет смысла
-            )
-        );
+        // Берём термы таксономии "cannabinoids"
+        $cannabinoids_terms = get_terms([
+            'taxonomy'   => 'cannabinoids',
+            'hide_empty' => false,
+        ]);
 
-        if (!empty($product_categories) && !is_wp_error($product_categories)) {
-            // Перемещаем "Other" в конец списка
-            usort($product_categories, function ($a, $b) {
-                return ($a->name === 'Other') - ($b->name === 'Other');
-            });
-
-            foreach ($product_categories as $category) {
-                $thumbnail_id = get_term_meta($category->term_id, 'thumbnail_id', true);
+        if (!empty($cannabinoids_terms) && !is_wp_error($cannabinoids_terms)) {
+            foreach ($cannabinoids_terms as $term) {
+                // Картинка (если используешь ACF или term_meta)
+                $thumbnail_id = get_term_meta($term->term_id, 'thumbnail_id', true);
                 $image_url = wp_get_attachment_url($thumbnail_id);
-                $image_url = $image_url ? $image_url : get_template_directory_uri() . '/img/home/image.png'; // Фолбэк изображение
-                $category_link = get_term_link($category);
+
+                // Фолбэк если нет картинки
+                if (!$image_url) {
+                    $image_url = get_template_directory_uri() . '/img/home/image.png';
+                }
+
+                // Ссылка на сам term
+                $term_link = get_term_link($term);
                 ?>
-                <a href="<?php echo esc_url($category_link); ?>" class="categories__item">
-                    <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($category->name); ?>" class="img">
-                    <span class="size-40 title"><?php echo esc_html($category->name); ?></span>
+                <a href="<?php echo esc_url($term_link); ?>" class="categories__item">
+                    <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($term->name); ?>" class="img">
+                    <span class="size-40 title"><?php echo esc_html($term->name); ?></span>
                 </a>
                 <?php
             }
         }
         ?>
     </ul>
-    </section> 
+</section>
+
 
 <?php get_template_part('template-parts/temp-other-products-pagination'); ?>
 

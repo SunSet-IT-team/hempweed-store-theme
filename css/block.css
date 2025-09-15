@@ -302,6 +302,10 @@ main {
   position: relative;
 }
 
+.new__slider{
+  overflow-x: clip;
+}
+
 .arrow-next {
   margin-right: 0 !important;
 }
@@ -1358,6 +1362,12 @@ p.form-row.form-row-first button, .checkout .button, .form-row button {
 
 .footer__block>.img {
   max-width: 200px;
+}
+
+.custom-notice-error {
+  background: #fff;
+  border: 1px solid #c3e6cb;
+  color: #c0392b;
 }
 
 @media screen and (max-width: 1200px) {
