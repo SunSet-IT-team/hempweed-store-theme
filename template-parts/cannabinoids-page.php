@@ -17,7 +17,7 @@ get_header();
                         </a>
                     </li>
                     <li>/</li>
-                    <li>Cannabiniods</li> 
+                    <li>Cannabinoids</li> 
                 </ul>
                 <div class="cannabiniods__banner_text _banner_text_cntr _flex_col">
                     <h1 class="title size-50 _heading"><?php the_field('cannabiniods__title'); ?></h1>
@@ -34,37 +34,48 @@ get_header();
     </section>
     <section id="categories" class="categories container padding-bot-100 padding-top-60 _p_rel">
     <ul class="categories__grid flex">
-        <?php
-        // Берём термы таксономии "cannabinoids"
-        $cannabinoids_terms = get_terms([
-            'taxonomy'   => 'cannabinoids',
-            'hide_empty' => false,
-        ]);
+    <?php
+$cannabinoids_terms = get_terms([
+    'taxonomy'   => 'cannabinoids',
+    'hide_empty' => false,
+    'orderby'    => 'name',
+    'order'      => 'ASC',
+]);
 
-        if (!empty($cannabinoids_terms) && !is_wp_error($cannabinoids_terms)) {
-            foreach ($cannabinoids_terms as $term) {
-                // Картинка (если используешь ACF или term_meta)
-                $thumbnail_id = get_term_meta($term->term_id, 'thumbnail_id', true);
-                $image_url = wp_get_attachment_url($thumbnail_id);
+if (!empty($cannabinoids_terms) && !is_wp_error($cannabinoids_terms)) {
+    foreach ($cannabinoids_terms as $term) {
+        $term_link = get_term_link($term);
 
-                // Фолбэк если нет картинки
-                if (!$image_url) {
-                    $image_url = get_template_directory_uri() . '/img/home/image.png';
-                }
+        // Берем ID картинки из мета
+        $image_id  = get_term_meta($term->term_id, 'cannabinoid-image-id', true);
 
-                // Ссылка на сам term
-                $term_link = get_term_link($term);
-                ?>
-                <a href="<?php echo esc_url($term_link); ?>" class="categories__item">
-                    <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($term->name); ?>" class="img">
-                    <span class="size-40 title"><?php echo esc_html($term->name); ?></span>
-                </a>
-                <?php
+        if ($image_id) {
+            $image_url = wp_get_attachment_url($image_id);
+            $image_alt = get_post_meta($image_id, '_wp_attachment_image_alt', true);
+            if (!$image_alt) {
+                $image_alt = $term->name; // fallback, если alt пустой
             }
+        } else {
+            $image_url = get_template_directory_uri() . '/img/home/image.png';
+            $image_alt = $term->name;
         }
         ?>
+        <a href="<?php echo esc_url($term_link); ?>" class="categories__item">
+            <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($image_alt); ?>" class="img">
+            <span class="size-40 title"><?php echo esc_html($term->name); ?></span>
+        </a>
+        <?php
+    }
+} else {
+    echo '<p>No cannabinoids terms found</p>';
+}
+?>
+
     </ul>
-</section>
+
+    </section>
+
+
 
 
 <?php get_template_part('template-parts/temp-other-products-pagination'); ?>

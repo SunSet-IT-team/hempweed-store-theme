@@ -6,6 +6,7 @@ import {openTabPictureModal} from './funcs/openTabPictureModal.js';
 import {accordion} from './funcs/accordion.js';
 import {burgerMenu} from './funcs/burgerMenu.js';
 import { productStockLabels } from './funcs/productStockLabels.js';
+import { termImageUpload } from './funcs/termImageUpload.js';
 
 const importArray = [
   showHeaderPopup,
@@ -15,7 +16,8 @@ const importArray = [
   openTabPictureModal,
   accordion,
   burgerMenu,
-  productStockLabels
+  productStockLabels,
+  termImageUpload,
 ]
 
 document.addEventListener('DOMContentLoaded', () => {

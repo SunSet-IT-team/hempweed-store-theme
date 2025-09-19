@@ -68,13 +68,11 @@ if ($stock_quantity === 0) {
             <!-- Добавить в корзину -->
 <?php 
 global $product;
-$stock_quantity = $product->get_stock_quantity(); // остаток товара
-$is_in_stock = $product->is_in_stock();          // проверка наличия
 
-// Если товара нет в наличии — добавляем класс и disabled
+// Проверка только на наличие
 $disabled_class = '';
 $disabled_attr  = '';
-if (!$is_in_stock || $stock_quantity <= 0) {
+if ( ! $product->is_in_stock() ) {
     $disabled_class = ' disabled';
     $disabled_attr  = ' disabled="disabled"';
 }
@@ -92,6 +90,7 @@ if (!$is_in_stock || $stock_quantity <= 0) {
         <?php echo esc_html__('Add to cart', 'woocommerce'); ?>
     </button>
 </form>
+  
 
                     </div>
                 </div>
