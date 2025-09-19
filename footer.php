@@ -13,6 +13,47 @@
 
   <footer class="footer">
     <div class="footer__container container flex">
+
+    <div class="benefits">
+                    <div class="benefits-container container">
+                        <div class="benefits-row row">
+                            <div class="benefit-item-col col-12 col-lg-4">
+                                <div class="benefit-item">
+                                    <div class="benefit-item-ico benefit-item-ico-quality"></div>
+                                    <div class="benefit-item-content">
+                                        <div class="benefit-item-title">
+                                            HIGHEST QUALITY                                        </div>
+                                        <div class="benefit-item-text">
+                                            products on the market - we stand behind that                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="benefit-item-col col-12 col-lg-4">
+                                <div class="benefit-item">
+                                    <div class="benefit-item-ico benefit-item-ico-legal"></div>
+                                    <div class="benefit-item-content">
+                                        <div class="benefit-item-title">
+                                            100% LEGAL                                        </div>
+                                        <div class="benefit-item-text">
+                                            all laboratory tested and certified                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="benefit-item-col col-12 col-lg-4">
+                                <div class="benefit-item">
+                                    <div class="benefit-item-ico benefit-item-ico-express"></div>
+                                    <div class="benefit-item-content">
+                                        <div class="benefit-item-title">
+                                            express delivery                                        </div>
+                                        <div class="benefit-item-text">
+                                            is always a matter of course with us                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    </div>  
+
       <div class="footer__block column">
         <a href="/" class="footer__logo logo">
           <img src="<?php the_field('logotipe', 'option'); ?>" alt="logotipe" class="logo__img img">
@@ -69,6 +110,14 @@
           </ul>
         <?php endif; ?>
       </div>
+
+      <div class="footer-about footer-about-first">
+                                    <span class="h4"><span>hempweed.store </span> <small>- specialized CBD e-shop</small></span>
+                                    <ul>
+	<li class="footer-about--margin-top">- the highest quality CBD products on the market - we stand behind our product</li>
+	<li>- all products are laboratory tested, certified and 100% legal</li>
+	<li>- express delivery and reliability to meet your expectations</li>
+</ul>                                </div>
 
       <div class="footer__bottom flex">
         <img src="<?php echo get_template_directory_uri(); ?>/img/sistem/18.svg" alt="" class="img">

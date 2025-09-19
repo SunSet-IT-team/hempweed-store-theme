@@ -701,18 +701,29 @@ function my_disable_purchase_if_oos( $purchasable, $product ) {
     return $purchasable;
 }
 
-// 4) В каталоге заменяем кнопку на неактивную для OOS
-add_filter('woocommerce_loop_add_to_cart_link', 'my_loop_add_to_cart_replace', 10, 2);
-function my_loop_add_to_cart_replace( $html, $product ) {
-    if ( ! $product ) return $html;
+add_action('woocommerce_before_shop_loop_item', 'disable_custom_add_to_cart_button', 10);
+add_action('woocommerce_before_single_product', 'disable_custom_add_to_cart_button', 10);
 
-    if ( ! $product->is_in_stock() ) {
-        // Ссылка ведёт на страницу товара; класс disabled — для стилей
-        return '<a class="button out-of-stock disabled" href="' . esc_url( get_permalink( $product->get_id() ) ) . '" aria-disabled="true">Out of stock</a>';
+function disable_custom_add_to_cart_button() {
+    global $product;
+    if (!$product) return;
+
+    // Если товара нет в наличии, передаем JS через wp_add_inline_script
+    if (!$product->is_in_stock()) {
+        ?>
+        <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            var buttons = document.querySelectorAll('button.cat__add_btn[data-product_id="<?php echo $product->get_id(); ?>"]');
+            buttons.forEach(function(btn) {
+                btn.classList.add('disabled');
+                btn.setAttribute('disabled', 'disabled');
+            });
+        });
+        </script>
+        <?php
     }
-
-    return $html;
 }
+
 
 // 5) Подключаем JS только на странице товара (для вариативных товаров)
 add_action('wp_enqueue_scripts', 'my_enqueue_stock_scripts');
@@ -747,3 +758,153 @@ add_filter( 'woocommerce_add_to_cart_validation', function( $passed, $product_id
 
     return $passed;
 }, 10, 3 );
+
+/**
+ * Авто-подключение CSS из /css и подпапок + style.css
+ */
+function kipr_enqueue_all_styles() {
+    // главный style.css темы (обязателен для WordPress)
+    wp_enqueue_style(
+        'kipr-style',
+        get_stylesheet_uri(),
+        array(),
+        _S_VERSION
+    );
+
+    // твой главный main.css, который собирает все стили через @import
+    wp_enqueue_style(
+        'kipr-main',
+        get_template_directory_uri() . '/css/main.css',
+        array('kipr-style'),
+        _S_VERSION
+    );
+}
+add_action('wp_enqueue_scripts', 'kipr_enqueue_all_styles', 20);
+
+/**
+ * Term image for taxonomy 'cannabinoids'
+ * Self-contained: adds field (add/edit), saves meta and injects inline JS (wp.media).
+ */
+
+add_action('cannabinoids_add_form_fields', 'cannabinoids_add_image_field');
+function cannabinoids_add_image_field($taxonomy) {
+    ?>
+    <div class="form-field term-group">
+        <label for="cannabinoid-image-id"><?php _e('Изображение', 'your-text-domain'); ?></label>
+        <input type="hidden" id="cannabinoid-image-id" name="cannabinoid-image-id" value="">
+        <div id="cannabinoid-image-wrapper" style="margin-top:10px;"></div>
+        <p>
+            <button type="button" class="button button-secondary cannabinoid-image-upload"><?php _e('Выбрать изображение', 'your-text-domain'); ?></button>
+            <button type="button" class="button button-secondary cannabinoid-image-remove" style="display:none;"><?php _e('Удалить изображение', 'your-text-domain'); ?></button>
+        </p>
+    </div>
+    <?php
+}
+
+add_action('cannabinoids_edit_form_fields', 'cannabinoids_edit_image_field', 10, 2);
+function cannabinoids_edit_image_field($term) {
+    $image_id  = get_term_meta($term->term_id, 'cannabinoid-image-id', true);
+    $image_url = $image_id ? wp_get_attachment_url($image_id) : '';
+    ?>
+    <tr class="form-field term-group-wrap">
+        <th scope="row"><label for="cannabinoid-image-id"><?php _e('Изображение', 'your-text-domain'); ?></label></th>
+        <td>
+            <input type="hidden" id="cannabinoid-image-id" name="cannabinoid-image-id" value="<?php echo esc_attr($image_id); ?>">
+            <div id="cannabinoid-image-wrapper" style="margin-top:10px;">
+                <?php if ($image_url): ?>
+                    <img src="<?php echo esc_url($image_url); ?>" style="max-width:150px;height:auto;">
+                <?php endif; ?>
+            </div>
+            <p>
+                <button type="button" class="button button-secondary cannabinoid-image-upload"><?php _e('Выбрать изображение', 'your-text-domain'); ?></button>
+                <button type="button" class="button button-secondary cannabinoid-image-remove" <?php if (!$image_url) echo 'style="display:none;"'; ?>><?php _e('Удалить изображение', 'your-text-domain'); ?></button>
+            </p>
+        </td>
+    </tr>
+    <?php
+}
+
+add_action('created_cannabinoids', 'cannabinoids_save_image', 10, 2);
+add_action('edited_cannabinoids', 'cannabinoids_save_image', 10, 2);
+function cannabinoids_save_image($term_id) {
+    if (isset($_POST['cannabinoid-image-id'])) {
+        $val = intval($_POST['cannabinoid-image-id']);
+        if ($val) {
+            update_term_meta($term_id, 'cannabinoid-image-id', $val);
+        } else {
+            delete_term_meta($term_id, 'cannabinoid-image-id');
+        }
+    }
+}
+
+/**
+ * Подключаем wp.media и инжектим минимальный inline-скрипт только на страницах редактирования/добавления таксономии 'cannabinoids'
+ */
+add_action('admin_enqueue_scripts', 'cannabinoids_admin_enqueue');
+function cannabinoids_admin_enqueue($hook) {
+    // Проверяем что это страница таксономии cannabinoids (add or edit)
+    if (
+        (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'cannabinoids')
+        || (isset($_GET['page']) && $_GET['page'] === 'edit-tags.php' && isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'cannabinoids')
+    ) {
+        // Подгружаем медиазагрузчик WP
+        wp_enqueue_media();
+
+        // Регистрируем пустой handle чтобы можно было вставить inline script
+        wp_register_script('cannabinoids-admin-inline', '');
+        wp_enqueue_script('cannabinoids-admin-inline');
+
+        // Inline JS: использует wp.media — не требует внешнего файла
+        $inline_js = <<<JS
+(function($){
+    var frame;
+    function initTermMedia() {
+        // кнопки и поля — на add и edit формах одинаковые селекторы
+        var uploadBtn = $(document).find('.cannabinoid-image-upload');
+        var removeBtn = $(document).find('.cannabinoid-image-remove');
+        var inputField = $(document).find('#cannabinoid-image-id');
+        var preview = $(document).find('#cannabinoid-image-wrapper');
+
+        // защита: если нет кнопки — выходим
+        if (!uploadBtn.length) return;
+
+        uploadBtn.off('click.cannabinoid').on('click.cannabinoid', function(e){
+            e.preventDefault();
+            if (frame) { frame.open(); return; }
+
+            frame = wp.media({
+                title: 'Выберите изображение',
+                button: { text: 'Использовать это изображение' },
+                multiple: false
+            });
+
+            frame.on('select', function(){
+                var attachment = frame.state().get('selection').first().toJSON();
+                if (!attachment) return;
+                // ставим ID в скрытое поле
+                inputField.val(attachment.id).trigger('change');
+                // покажем превью
+                preview.html('<img src="' + attachment.url + '" style="max-width:150px;height:auto;" />');
+                removeBtn.show();
+            });
+
+            frame.open();
+        });
+
+        removeBtn.off('click.cannabinoid').on('click.cannabinoid', function(e){
+            e.preventDefault();
+            inputField.val('').trigger('change');
+            preview.html('');
+            $(this).hide();
+        });
+    }
+
+    // Инициализируем на DOM ready и после ajax (если WP подгружает формы динамически)
+    $(document).ready(initTermMedia);
+    $(document).on('DOMNodeInserted', initTermMedia);
+})(jQuery);
+JS;
+
+        wp_add_inline_script('cannabinoids-admin-inline', $inline_js);
+    }
+}

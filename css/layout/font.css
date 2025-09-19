@@ -75,9 +75,10 @@
 @font-face {
   font-family: "Geologica";
   src: url("../../fonts/Geologica/Geologica_Regular.woff2") format("woff2"),
-       url("../../fonts/Geologica/Geologica_Regular.woff") format("woff"),
-       url("../../fonts/Geologica/Geologica_Regular.ttf") format("truetype");
-  font-weight: 400; /* Regular */
+    url("../../fonts/Geologica/Geologica_Regular.woff") format("woff"),
+    url("../../fonts/Geologica/Geologica_Regular.ttf") format("truetype");
+  font-weight: 400;
+  /* Regular */
   font-style: normal;
   font-display: swap;
 }
@@ -85,9 +86,10 @@
 @font-face {
   font-family: "Geologica";
   src: url("../../fonts/Geologica/Geologica_Bold.woff2") format("woff2"),
-       url("../../fonts/Geologica/Geologica_Bold.woff") format("woff"),
-       url("../../fonts/Geologica/Geologica_Bold.ttf") format("truetype");
-  font-weight: 700; /* Bold */
+    url("../../fonts/Geologica/Geologica_Bold.woff") format("woff"),
+    url("../../fonts/Geologica/Geologica_Bold.ttf") format("truetype");
+  font-weight: 700;
+  /* Bold */
   font-style: normal;
   font-display: swap;
 }
@@ -95,9 +97,10 @@
 @font-face {
   font-family: "Geologica";
   src: url("../../fonts/Geologica/Geologica_Light.woff2") format("woff2"),
-       url("../../fonts/Geologica/Geologica_Light.woff") format("woff"),
-       url("../../fonts/Geologica/Geologica_Light.ttf") format("truetype");
-  font-weight: 300; /* Light */
+    url("../../fonts/Geologica/Geologica_Light.woff") format("woff"),
+    url("../../fonts/Geologica/Geologica_Light.ttf") format("truetype");
+  font-weight: 300;
+  /* Light */
   font-style: normal;
   font-display: swap;
 }
@@ -105,39 +108,46 @@
 @font-face {
   font-family: "Geologica";
   src: url("../../fonts/Geologica/Geologica_Light_Italic.woff2") format("woff2"),
-       url("../../fonts/Geologica/Geologica_Light_Italic.woff") format("woff"),
-       url("../../fonts/Geologica/Geologica_Light_Italic.ttf") format("truetype");
-  font-weight: 300; /* Light */
+    url("../../fonts/Geologica/Geologica_Light_Italic.woff") format("woff"),
+    url("../../fonts/Geologica/Geologica_Light_Italic.ttf") format("truetype");
+  font-weight: 300;
+  /* Light */
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Geologica";
-  src: url("../../fonts/Geologica/Geologica_ExtraLight.ttf") format("woff2"), /* Исправлено: ttf -> woff2 */
-       url("../../fonts/Geologica/Geologica_ExtraLight.woff") format("woff"),
-       url("../../fonts/Geologica/Geologica_ExtraLight.ttf") format("truetype");
-  font-weight: 200; /* ExtraLight */
+  src: url("../../fonts/Geologica/Geologica_ExtraLight.ttf") format("woff2"),
+    /* Исправлено: ttf -> woff2 */
+    url("../../fonts/Geologica/Geologica_ExtraLight.woff") format("woff"),
+    url("../../fonts/Geologica/Geologica_ExtraLight.ttf") format("truetype");
+  font-weight: 200;
+  /* ExtraLight */
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Geologica";
-  src: url("../../fonts/Geologica/Geologica_Medium.ttf") format("woff2"), /* Исправлено: ttf -> woff2 */
-       url("../../fonts/Geologica/Geologica_Medium.woff") format("woff"),
-       url("../../fonts/Geologica/Geologica_Medium.ttf") format("truetype");
-  font-weight: 500; /* Medium */
+  src: url("../../fonts/Geologica/Geologica_Medium.ttf") format("woff2"),
+    /* Исправлено: ttf -> woff2 */
+    url("../../fonts/Geologica/Geologica_Medium.woff") format("woff"),
+    url("../../fonts/Geologica/Geologica_Medium.ttf") format("truetype");
+  font-weight: 500;
+  /* Medium */
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Geologica";
-  src: url("../../fonts/Geologica/Geologica_Semibold.ttf") format("woff2"), /* Исправлено: ttf -> woff2 */
-       url("../../fonts/Geologica/Geologica_Semibold.woff") format("woff"),
-       url("../../fonts/Geologica/Geologica_Semibold.ttf") format("truetype");
-  font-weight: 600; /* Semibold */
+  src: url("../../fonts/Geologica/Geologica_Semibold.ttf") format("woff2"),
+    /* Исправлено: ttf -> woff2 */
+    url("../../fonts/Geologica/Geologica_Semibold.woff") format("woff"),
+    url("../../fonts/Geologica/Geologica_Semibold.ttf") format("truetype");
+  font-weight: 600;
+  /* Semibold */
   font-style: normal;
   font-display: swap;
 }
@@ -147,19 +157,22 @@
 @font-face {
   font-family: "Open Sans";
   src: url("../../fonts/Open_Sans/OpenSans-Regular.woff2") format("woff2"),
-       url("../../fonts/Open_Sans/OpenSans-Regular.woff") format("woff"),
-       url("../../fonts/Open_Sans/OpenSans-Regular.ttf") format("truetype");
-  font-weight: 400; /* Regular */
+    url("../../fonts/Open_Sans/OpenSans-Regular.woff") format("woff"),
+    url("../../fonts/Open_Sans/OpenSans-Regular.ttf") format("truetype");
+  font-weight: 400;
+  /* Regular */
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Open Sans";
-  src: url("../../fonts/Open_Sans/OpenSans-SemiBold.ttf") format("woff2"),  /* Исправлено: ttf -> woff2 */
-       url("../../fonts/Open_Sans/OpenSans-SemiBold.woff") format("woff"),
-       url("../../fonts/Open_Sans/OpenSans-SemiBold.ttf") format("truetype");
-  font-weight: 600; /* SemiBold */
+  src: url("../../fonts/Open_Sans/OpenSans-SemiBold.ttf") format("woff2"),
+    /* Исправлено: ttf -> woff2 */
+    url("../../fonts/Open_Sans/OpenSans-SemiBold.woff") format("woff"),
+    url("../../fonts/Open_Sans/OpenSans-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  /* SemiBold */
   font-style: normal;
   font-display: swap;
 }
@@ -169,9 +182,10 @@
 @font-face {
   font-family: "Cormorant";
   src: url("../../fonts/Cormorant/Cormorant_Regular.woff2") format("woff2"),
-       url("../../fonts/Cormorant/Cormorant_Regular.woff") format("woff"),
-       url("../../fonts/Cormorant/Cormorant_Regular.ttf") format("truetype");
-  font-weight: 400; /* Regular */
+    url("../../fonts/Cormorant/Cormorant_Regular.woff") format("woff"),
+    url("../../fonts/Cormorant/Cormorant_Regular.ttf") format("truetype");
+  font-weight: 400;
+  /* Regular */
   font-style: normal;
   font-display: swap;
 }
@@ -179,9 +193,10 @@
 @font-face {
   font-family: "Cormorant";
   src: url("../../fonts/Cormorant/Cormorant_Bold.woff2") format("woff2"),
-       url("../../fonts/Cormorant/Cormorant_Bold.woff") format("woff"),
-       url("../../fonts/Cormorant/Cormorant_Bold.ttf") format("truetype");
-  font-weight: 700; /* Bold */
+    url("../../fonts/Cormorant/Cormorant_Bold.woff") format("woff"),
+    url("../../fonts/Cormorant/Cormorant_Bold.ttf") format("truetype");
+  font-weight: 700;
+  /* Bold */
   font-style: normal;
   font-display: swap;
 }
@@ -191,9 +206,10 @@
 @font-face {
   font-family: "Inter";
   src: url("../../fonts/Inter/InterRegular.woff2") format("woff2"),
-       url("../../fonts/Inter/InterRegular.woff") format("woff"),
-       url("../../fonts/Inter/InterRegular.ttf") format("truetype");
-  font-weight: 400; /* Regular */
+    url("../../fonts/Inter/InterRegular.woff") format("woff"),
+    url("../../fonts/Inter/InterRegular.ttf") format("truetype");
+  font-weight: 400;
+  /* Regular */
   font-style: normal;
   font-display: swap;
 }
@@ -203,9 +219,20 @@
 @font-face {
   font-family: "Montserrat";
   src: url("../../fonts/Montserrat/Montserrat_ExtraBold.woff2") format("woff2"),
-       url("../../fonts/Montserrat/Montserrat_ExtraBold.woff") format("woff"),
-       url("../../fonts/Montserrat/Montserrat_ExtraBold.ttf") format("truetype");
-  font-weight: 800; /* ExtraBold */
+    url("../../fonts/Montserrat/Montserrat_ExtraBold.woff") format("woff"),
+    url("../../fonts/Montserrat/Montserrat_ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  /* ExtraBold */
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Bebas Neue */
+@font-face {
+  font-family: 'Bebas Neue';
+  src: url("../../fonts/Bebas_Neue/BebasNeue-Regular.woff2") format('woff2'),
+    url("../../fonts/Bebas_Neue/BebasNeue-Regular.woff") format('woff');
+  font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
